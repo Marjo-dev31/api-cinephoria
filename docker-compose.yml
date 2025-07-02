@@ -1,0 +1,13 @@
+services:
+    nestjs_api:
+        container_name: nodeappcontainer
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports: 
+          - '3000:3000'
+        environment:
+          - PORT=3000
+          - NODE_ENV=development
+        volumes:
+          - ./scr:/usr/src/app/src
