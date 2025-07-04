@@ -1,13 +1,39 @@
 services:
+    mysql_db:
+        container_name: mysqlcontainer
+        image: mysql:8
+        restart: unless-stopped
+        ports:
+            - '3307:3306'
+        environment:
+            - MYSQL_USER=${MYSQL_DB_USERNAME}
+            - MYSQL_PASSWORD=${MYSQL_DB_PASSWORD}
+            - MYSQL_DATABASE=${MYSQL_DB_DATABASE}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+        networks:
+            - internalnet
     nestjs_api:
         container_name: nodeappcontainer
         build:
             context: .
             dockerfile: Dockerfile
-        ports: 
-          - '3000:3000'
+        restart: always
+        ports:
+            - '3000:3000'
+        depends_on:
+            - mysql_db
         environment:
-          - PORT=3000
-          - NODE_ENV=development
+            - PORT=${PORT}
+            - NODE_ENV=development
+            - MYSQL_DB_HOST=mysql_db
+            - MYSQL_DB_PORT=${MYSQL_DB_PORT}
+            - MYSQL_DB_USERNAME=${MYSQL_DB_USERNAME}
+            - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD}
+            - MYSQL_DB_DATABASE=${MYSQL_DB_DATABASE}
         volumes:
-          - ./scr:/usr/src/app/src
+            - ./src:/usr/src/app/src
+        networks:
+            - internalnet
+networks:
+  internalnet:
+    driver: bridge
