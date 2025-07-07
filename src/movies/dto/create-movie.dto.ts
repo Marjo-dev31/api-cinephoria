@@ -1,12 +1,15 @@
-import { IsBoolean, IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateMovieDto {
+    @IsNotEmpty()
     @IsString()
     title: string;
 
+    @IsNotEmpty()
     @IsString()
     description: string;
 
+    @IsNotEmpty()
     @IsString()
     image_Url: string;
 
