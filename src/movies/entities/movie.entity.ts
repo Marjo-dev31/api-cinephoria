@@ -19,7 +19,7 @@ export class Movie {
     @Column()
     image_Url: string;
 
-    @Column('int')
+    @Column('int', { default: 0 })
     minimun_Age: number;
 
     @Column({ default: false })

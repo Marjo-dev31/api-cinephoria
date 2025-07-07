@@ -41,4 +41,13 @@ export class MoviesService {
     async remove(id: string) {
         return await this.movieRepository.delete({ id });
     }
+
+    async isFavorite(id: string, isFavorite: boolean) {
+        return await this.movieRepository.update(
+            { id },
+            {
+                is_Favorite: isFavorite,
+            },
+        );
+    }
 }

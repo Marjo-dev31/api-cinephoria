@@ -42,4 +42,9 @@ export class MoviesController {
     remove(@Param('id') id: string) {
         return this.moviesService.remove(id);
     }
+
+    @Patch(':id/favorite')
+    isFavorite(@Param('id') id: string, @Body() isFavorite: boolean) {
+        return this.moviesService.isFavorite(id, isFavorite);
+    }
 }
