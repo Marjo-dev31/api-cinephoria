@@ -17,11 +17,11 @@ export class MoviesService {
         return await this.movieRepository.save(newMovie);
     }
 
-    async findAll(): Promise<Movie[]> {
+    async findAll(): Promise<UpdateMovieDto[]> {
         return await this.movieRepository.find();
     }
 
-    async findOne(id: string): Promise<Movie | null> {
+    async findOne(id: string): Promise<UpdateMovieDto | null> {
         return await this.movieRepository.findOne({ where: { id } });
     }
 

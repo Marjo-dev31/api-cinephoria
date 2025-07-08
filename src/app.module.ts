@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './config/database.module';
 import { MoviesModule } from './movies/movies.module';
+import { UploadController } from './upload/upload.controller';
 
 @Module({
     imports: [
@@ -13,7 +14,7 @@ import { MoviesModule } from './movies/movies.module';
         DatabaseModule,
         MoviesModule,
     ],
-    controllers: [AppController],
+    controllers: [AppController, UploadController],
     providers: [AppService],
 })
 export class AppModule {}
