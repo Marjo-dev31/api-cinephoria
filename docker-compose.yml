@@ -32,6 +32,7 @@ services:
             - MYSQL_DB_DATABASE=${MYSQL_DB_DATABASE}
         volumes:
             - ./src:/usr/src/app/src
+            - ./uploads:/usr/src/app/uploads
         networks:
             - internalnet
 networks:
