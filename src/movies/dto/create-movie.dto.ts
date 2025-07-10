@@ -1,4 +1,5 @@
 import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { UpdateGenreDto } from '../../genre/dto/update-genre.dto';
 
 export class CreateMovieDto {
     @IsNotEmpty()
@@ -18,4 +19,7 @@ export class CreateMovieDto {
 
     @IsBoolean()
     is_Favorite: boolean;
+
+    @IsString()
+    genre: UpdateGenreDto;
 }
