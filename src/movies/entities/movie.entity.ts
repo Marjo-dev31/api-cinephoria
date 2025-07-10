@@ -2,8 +2,11 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    JoinColumn,
+    ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Genre } from '../../genre/entities/genre.entity';
 
 @Entity()
 export class Movie {
@@ -27,4 +30,8 @@ export class Movie {
 
     @CreateDateColumn()
     create_At: Date;
+
+    @ManyToOne(() => Genre, (genre) => genre.id, { onDelete: 'SET NULL' })
+    @JoinColumn({ name: 'genreId' })
+    genre: Genre;
 }

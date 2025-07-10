@@ -34,6 +34,7 @@ export class MoviesService {
                 image_Url: updateMovieDto.image_Url,
                 minimun_Age: updateMovieDto.minimun_Age,
                 is_Favorite: updateMovieDto.is_Favorite,
+                genre: updateMovieDto.genre,
             },
         );
     }
