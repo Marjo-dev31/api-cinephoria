@@ -18,7 +18,7 @@ export class MoviesService {
     }
 
     async findAll(): Promise<UpdateMovieDto[]> {
-        return await this.movieRepository.find();
+        return await this.movieRepository.find({ relations: { genre: true } });
     }
 
     async findOne(id: string): Promise<UpdateMovieDto | null> {

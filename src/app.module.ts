@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './config/database.module';
 import { MoviesModule } from './movies/movies.module';
 import { GenreModule } from './genre/genre.module';
+import { ReviewsModule } from './reviews/reviews.module';
 
 @Module({
     imports: [
@@ -14,6 +15,7 @@ import { GenreModule } from './genre/genre.module';
         DatabaseModule,
         MoviesModule,
         GenreModule,
+        ReviewsModule,
     ],
     controllers: [AppController],
     providers: [AppService],
