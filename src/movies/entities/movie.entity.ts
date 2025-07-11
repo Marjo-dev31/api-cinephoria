@@ -4,9 +4,11 @@ import {
     Entity,
     JoinColumn,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Genre } from '../../genre/entities/genre.entity';
+import { Review } from '../../reviews/entities/review.entity';
 
 @Entity()
 export class Movie {
@@ -34,4 +36,7 @@ export class Movie {
     @ManyToOne(() => Genre, (genre) => genre.id, { onDelete: 'SET NULL' })
     @JoinColumn({ name: 'genreId' })
     genre: Genre;
+
+    @OneToMany(() => Review, (review) => review.movie)
+    reviews: Review[];
 }
