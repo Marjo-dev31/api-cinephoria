@@ -1,12 +1,17 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { ProjectionQuality } from '../../projection-quality/entities/projection-quality.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Price {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column()
+    @Column('float')
     price: number;
 
-    // @OneToMany(()=>)
+    @OneToMany(
+        () => ProjectionQuality,
+        (projectionQuality) => projectionQuality.id,
+    )
+    projectionQuality: ProjectionQuality[];
 }
