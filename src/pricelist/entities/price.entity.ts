@@ -6,7 +6,7 @@ export class Price {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
-    @Column('float')
+    @Column('decimal', { precision: 10, scale: 2 })
     price: number;
 
     @OneToMany(
