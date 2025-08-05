@@ -8,6 +8,8 @@ import { GenreModule } from './genre/genre.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { CountryModule } from './country/country.module';
 import { CinemaModule } from './cinema/cinema.module';
+import { SeatModule } from './seat/seat.module';
+import { RoomModule } from './room/room.module';
 
 @Module({
     imports: [
@@ -20,6 +22,8 @@ import { CinemaModule } from './cinema/cinema.module';
         ReviewsModule,
         CountryModule,
         CinemaModule,
+        SeatModule,
+        RoomModule,
     ],
     controllers: [AppController],
     providers: [AppService],

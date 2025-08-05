@@ -42,3 +42,64 @@ INSERT INTO Movie(title, description, image_Url, minimun_Age, genreId ) VALUES
 --     "create_At": "2025-07-10T08:58:53.731Z"
 --   }
 -- ]
+
+INSERT INTO price VALUES(uuid(), 9.90),(uuid(), 10.90),(uuid(), 12.90),(uuid(), 15.90);
+
+INSERT INTO projection_quality VALUES 
+(uuid(),'4DX',(SELECT id FROM price WHERE price = 15.90)),
+(uuid(),'3D',(SELECT id FROM price WHERE price = 10.90)),
+(uuid(),'4K',(SELECT id FROM price WHERE price = 12.90)),
+(uuid(),'standard', (SELECT id FROM price WHERE price = 9.90));
+
+INSERT INTO country VALUES (uuid(),'france'),(uuid(),'belgique');
+
+INSERT INTO cinema VALUES 
+(uuid(), 'toulouse', (SELECT id FROM country WHERE name = 'france')),
+(uuid(), 'nantes', (SELECT id FROM country WHERE name = 'france')),
+(uuid(), 'lille', (SELECT id FROM country WHERE name = 'france')),
+(uuid(), 'bordeaux', (SELECT id FROM country WHERE name = 'france')),
+(uuid(), 'paris', (SELECT id FROM country WHERE name = 'france')),
+(uuid(), 'charleroi', (SELECT id FROM country WHERE name = 'belgique')),
+(uuid(), 'liège', (SELECT id FROM country WHERE name = 'belgique'));
+
+
+-- equal for all cities
+INSERT INTO room VALUES
+(uuid(), 1, 20, (SELECT id FROM cinema WHERE city='toulouse'), (SELECT id FROM projection_quality WHERE quality='3D')),
+(uuid(), 2, 15, (SELECT id FROM cinema WHERE city='toulouse'), (SELECT id FROM projection_quality WHERE quality='4DX')),
+(uuid(), 3, 25, (SELECT id FROM cinema WHERE city='toulouse'), (SELECT id FROM projection_quality WHERE quality='4K')),
+(uuid(), 4, 10, (SELECT id FROM cinema WHERE city='toulouse'), (SELECT id FROM projection_quality WHERE quality='standard')),
+(uuid(), 1, 20, (SELECT id FROM cinema WHERE city='nantes'), (SELECT id FROM projection_quality WHERE quality='3D')),
+(uuid(), 2, 15, (SELECT id FROM cinema WHERE city='nantes'), (SELECT id FROM projection_quality WHERE quality='4DX')),
+(uuid(), 1, 25, (SELECT id FROM cinema WHERE city='bordeaux'), (SELECT id FROM projection_quality WHERE quality='4K')),
+(uuid(), 2, 10, (SELECT id FROM cinema WHERE city='bordeaux'), (SELECT id FROM projection_quality WHERE quality='standard')),
+(uuid(), 1, 15, (SELECT id FROM cinema WHERE city='paris'), (SELECT id FROM projection_quality WHERE quality='3D')),
+(uuid(), 2, 20, (SELECT id FROM cinema WHERE city='paris'), (SELECT id FROM projection_quality WHERE quality='standard')),
+(uuid(), 1, 10, (SELECT id FROM cinema WHERE city='lille'), (SELECT id FROM projection_quality WHERE quality='4DX')),
+(uuid(), 2, 20, (SELECT id FROM cinema WHERE city='lille'), (SELECT id FROM projection_quality WHERE quality='4K')),
+(uuid(), 1, 15, (SELECT id FROM cinema WHERE city='charleroi'), (SELECT id FROM projection_quality WHERE quality='standard')),
+(uuid(), 2, 25, (SELECT id FROM cinema WHERE city='charleroi'), (SELECT id FROM projection_quality WHERE quality='3D')),
+(uuid(), 1, 10, (SELECT id FROM cinema WHERE city='liège'), (SELECT id FROM projection_quality WHERE quality='4DX')),
+(uuid(), 2, 25, (SELECT id FROM cinema WHERE city='liège'), (SELECT id FROM projection_quality WHERE quality='4K'));
+
+--equal for all rooms in all cities
+
+DELIMITER //
+
+CREATE PROCEDURE insert_seat_loop()
+
+BEGIN
+DECLARE i INT DEFAULT 0;
+
+WHILE i<=10 DO
+-- insert into seat values (uuid(), i, false, false, iddelasalle)
+INSERT INTO seat VALUES (uuid(), i, false, false, '53903d25-7212-11f0-9e9c-36b09edbb3e4');
+
+
+SET i = i + 1;
+END WHILE;
+END // 
+
+DELIMITER ;
+
+CALL insert_seat_loop()
