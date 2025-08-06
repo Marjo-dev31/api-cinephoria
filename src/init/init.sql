@@ -82,18 +82,23 @@ INSERT INTO room VALUES
 (uuid(), 1, 10, (SELECT id FROM cinema WHERE city='liège'), (SELECT id FROM projection_quality WHERE quality='4DX')),
 (uuid(), 2, 25, (SELECT id FROM cinema WHERE city='liège'), (SELECT id FROM projection_quality WHERE quality='4K'));
 
---equal for all rooms in all cities
+--equal for all rooms
+
+--for numberOfSeats = 10
 
 DELIMITER //
 
-CREATE PROCEDURE insert_seat_loop()
+CREATE PROCEDURE insert_ten_seat_loop()
 
 BEGIN
-DECLARE i INT DEFAULT 0;
+DECLARE i INT DEFAULT 1;
 
 WHILE i<=10 DO
--- insert into seat values (uuid(), i, false, false, iddelasalle)
-INSERT INTO seat VALUES (uuid(), i, false, false, '53903d25-7212-11f0-9e9c-36b09edbb3e4');
+-- insert into seat values (uuid(), i, false, false, iddelasalle) salle de 10 faire pareil pour 15 20 25
+INSERT INTO seat VALUES (uuid(), i, false, false, '53905558-7212-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab244dfb-7211-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab245753-7211-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab246145-7211-11f0-9e9c-36b09edbb3e4');
 
 
 SET i = i + 1;
@@ -102,4 +107,77 @@ END //
 
 DELIMITER ;
 
-CALL insert_seat_loop()
+CALL insert_ten_seat_loop()
+
+-- for numberOfSeats = 15
+
+DELIMITER //
+
+CREATE PROCEDURE insert_fifteen_seat_loop()
+
+BEGIN
+DECLARE i INT DEFAULT 1;
+
+WHILE i<=15 DO
+-- insert into seat values (uuid(), i, false, false, iddelasalle)
+INSERT INTO seat VALUES (uuid(), i, false, false, '53904b02-7212-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab244423-7211-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab2451a5-7211-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab245cc7-7211-11f0-9e9c-36b09edbb3e4');
+
+SET i = i + 1;
+
+END WHILE;
+
+END // 
+
+DELIMITER ;
+
+-- for numberOfSeats = 18
+
+DELIMITER //
+
+CREATE PROCEDURE insert_eighteen_seat_loop()
+
+BEGIN
+DECLARE i INT DEFAULT 1;
+
+WHILE i<=18 DO
+-- insert into seat values (uuid(), i, false, false, iddelasalle)
+INSERT INTO seat VALUES (uuid(), i, false, false, '53905187-7212-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab244aaa-7211-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab245edb-7211-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab246409-7211-11f0-9e9c-36b09edbb3e4');
+
+SET i = i + 1;
+
+END WHILE;
+
+END // 
+
+DELIMITER ;
+
+-- for numberOfSeats = 20
+
+DELIMITER //
+
+CREATE PROCEDURE insert_twenty_seat_loop()
+
+BEGIN
+DECLARE i INT DEFAULT 1;
+
+WHILE i<=20 DO
+-- insert into seat values (uuid(), i, false, false, iddelasalle)
+INSERT INTO seat VALUES (uuid(), i, false, false, '53903d25-7212-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab2416f0-7211-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab245466-7211-11f0-9e9c-36b09edbb3e4');
+INSERT INTO seat VALUES (uuid(), i, false, false, 'ab245a30-7211-11f0-9e9c-36b09edbb3e4');
+
+
+SET i = i + 1;
+
+END WHILE;
+
+END // 
+
+DELIMITER ;
