@@ -1,9 +1,8 @@
-import { Room } from 'src/room/entities/room.entity';
+import { Room } from '../../room/entities/room.entity';
 import { Price } from '../../pricelist/entities/price.entity';
 import {
     Column,
     Entity,
-    JoinColumn,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
@@ -17,10 +16,11 @@ export class ProjectionQuality {
     @Column()
     quality: string;
 
-    @ManyToOne(() => Price, (price) => price.id, { onDelete: 'SET NULL' })
-    @JoinColumn({ name: 'priceId' })
+    @ManyToOne(() => Price, (price) => price.projectionQuality, {
+        onDelete: 'SET NULL',
+    })
     price: Price;
 
-    @OneToMany(() => Room, (room) => room.id)
+    @OneToMany(() => Room, (room) => room.projectionQuality)
     room: Room[];
 }

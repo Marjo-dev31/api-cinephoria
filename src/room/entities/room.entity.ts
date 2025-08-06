@@ -1,6 +1,7 @@
-import { Cinema } from 'src/cinema/entities/cinema.entity';
-import { ProjectionQuality } from 'src/projection-quality/entities/projection-quality.entity';
-import { Seat } from 'src/seat/entities/seat.entity';
+import { Showing } from '../../showing/entities/showing.entity';
+import { Cinema } from '../../cinema/entities/cinema.entity';
+import { ProjectionQuality } from '../../projection-quality/entities/projection-quality.entity';
+import { Seat } from '../../seat/entities/seat.entity';
 import {
     Column,
     Entity,
@@ -20,14 +21,17 @@ export class Room {
     @Column()
     numberOfSeats: number;
 
-    @ManyToOne(() => Cinema, (cinema) => cinema.id, { onDelete: 'SET NULL' })
+    @ManyToOne(() => Cinema, (cinema) => cinema.room, { onDelete: 'CASCADE' })
     cinema: Cinema;
 
-    @ManyToOne(() => ProjectionQuality, (quality) => quality.id, {
+    @ManyToOne(() => ProjectionQuality, (quality) => quality.room, {
         onDelete: 'SET NULL',
     })
-    quality: ProjectionQuality;
+    projectionQuality: ProjectionQuality;
 
-    @OneToMany(() => Seat, (seat) => seat.id)
+    @OneToMany(() => Seat, (seat) => seat.room)
     seat: Seat[];
+
+    @OneToMany(() => Showing, (showing) => showing.room)
+    showing: Showing[];
 }
