@@ -17,7 +17,16 @@ export class ShowingService {
     }
 
     async findAll() {
-        return await this.showingRepository.find();
+        return await this.showingRepository.find({
+            relations: {
+                movie: true,
+                room: {
+                    cinema: true,
+                    seat: true,
+                    projectionQuality: { price: true },
+                },
+            },
+        });
     }
 
     findOne(id: string) {

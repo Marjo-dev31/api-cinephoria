@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
-import { UpdateMovieDto } from './dto/update-movie.dto';
+import { MovieDto, UpdateMovieDto } from './dto/update-movie.dto';
 import { MOVIE_REPOSITORY } from './constants';
 import { Repository } from 'typeorm';
 import { Movie } from './entities/movie.entity';
@@ -17,14 +17,25 @@ export class MoviesService {
         return await this.movieRepository.save(newMovie);
     }
 
-    async findAll(): Promise<UpdateMovieDto[]> {
+    async findAll(): Promise<MovieDto[]> {
         return await this.movieRepository.find({
-            relations: { genre: true, reviews: true },
+            relations: {
+                genre: true,
+                reviews: true,
+                showing: {
+                    room: { cinema: true },
+                },
+            },
         });
     }
 
-    async findOne(id: string): Promise<UpdateMovieDto | null> {
-        return await this.movieRepository.findOne({ where: { id } });
+    async findOne(id: string): Promise<MovieDto | null> {
+        return await this.movieRepository.findOne({
+            relations: {
+                showing: { room: { projectionQuality: { price: true } } },
+            },
+            where: { id },
+        });
     }
 
     async update(id: string, updateMovieDto: UpdateMovieDto) {
