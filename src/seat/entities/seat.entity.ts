@@ -1,4 +1,4 @@
-import { Room } from 'src/room/entities/room.entity';
+import { Room } from '../../room/entities/room.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -15,6 +15,6 @@ export class Seat {
     @Column({ default: false })
     reserved: boolean;
 
-    @ManyToOne(() => Room, (room) => room.id, { onDelete: 'SET NULL' })
+    @ManyToOne(() => Room, (room) => room.seat, { onDelete: 'CASCADE' })
     room: Room;
 }

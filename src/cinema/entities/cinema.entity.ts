@@ -1,9 +1,8 @@
-import { Room } from 'src/room/entities/room.entity';
+import { Room } from '../../room/entities/room.entity';
 import { Country } from '../../country/entities/country.entity';
 import {
     Column,
     Entity,
-    JoinColumn,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
@@ -17,10 +16,11 @@ export class Cinema {
     @Column()
     city: string;
 
-    @ManyToOne(() => Country, (country) => country.id, { onDelete: 'SET NULL' })
-    @JoinColumn({ name: 'coutryId' })
+    @ManyToOne(() => Country, (country) => country.cinema, {
+        onDelete: 'SET NULL',
+    })
     country: Country;
 
-    @OneToMany(() => Room, (room) => room.id)
+    @OneToMany(() => Room, (room) => room.cinema)
     room: Room[];
 }

@@ -11,7 +11,7 @@ export class Price {
 
     @OneToMany(
         () => ProjectionQuality,
-        (projectionQuality) => projectionQuality.id,
+        (projectionQuality) => projectionQuality.price,
     )
     projectionQuality: ProjectionQuality[];
 }

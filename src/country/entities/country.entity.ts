@@ -9,6 +9,6 @@ export class Country {
     @Column()
     name: string;
 
-    @OneToMany(() => Cinema, (cinema) => cinema.id)
+    @OneToMany(() => Cinema, (cinema) => cinema.country)
     cinema: Cinema[];
 }

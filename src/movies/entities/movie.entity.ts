@@ -2,13 +2,13 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    JoinColumn,
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Genre } from '../../genre/entities/genre.entity';
 import { Review } from '../../reviews/entities/review.entity';
+import { Showing } from '../../showing/entities/showing.entity';
 
 @Entity()
 export class Movie {
@@ -33,10 +33,12 @@ export class Movie {
     @CreateDateColumn()
     create_At: Date;
 
-    @ManyToOne(() => Genre, (genre) => genre.id, { onDelete: 'SET NULL' })
-    @JoinColumn({ name: 'genreId' })
+    @ManyToOne(() => Genre, (genre) => genre.movie, { onDelete: 'SET NULL' })
     genre: Genre;
 
     @OneToMany(() => Review, (review) => review.movie)
     reviews: Review[];
+
+    @OneToMany(() => Showing, (showing) => showing.movie)
+    showing: Showing[];
 }

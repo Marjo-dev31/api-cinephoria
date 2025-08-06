@@ -1,11 +1,5 @@
 import { Movie } from '../../movies/entities/movie.entity';
-import {
-    Column,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Review {
@@ -21,7 +15,6 @@ export class Review {
     @Column({ default: false })
     is_Validated: boolean;
 
-    @ManyToOne(() => Movie, (movie) => movie.id, { onDelete: 'SET NULL' })
-    @JoinColumn({ name: 'movieId' })
+    @ManyToOne(() => Movie, (movie) => movie.reviews, { onDelete: 'CASCADE' })
     movie: Movie;
 }
