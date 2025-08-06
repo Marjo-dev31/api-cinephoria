@@ -10,6 +10,7 @@ import { CountryModule } from './country/country.module';
 import { CinemaModule } from './cinema/cinema.module';
 import { SeatModule } from './seat/seat.module';
 import { RoomModule } from './room/room.module';
+import { SessionModule } from './session/session.module';
 
 @Module({
     imports: [
@@ -24,6 +25,7 @@ import { RoomModule } from './room/room.module';
         CinemaModule,
         SeatModule,
         RoomModule,
+        SessionModule,
     ],
     controllers: [AppController],
     providers: [AppService],
