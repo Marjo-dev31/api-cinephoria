@@ -1,5 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
-import { Room } from '../../room/entities/room.entity';
+import { IsBoolean, IsNotEmpty, IsNumber } from 'class-validator';
 
 export class CreateSeatDto {
     @IsNumber()
@@ -11,7 +10,4 @@ export class CreateSeatDto {
 
     @IsBoolean()
     reserved: boolean;
-
-    @IsOptional()
-    room: Room;
 }

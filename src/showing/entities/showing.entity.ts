@@ -1,6 +1,13 @@
+import { Seat } from '../../seat/entities/seat.entity';
 import { Movie } from '../../movies/entities/movie.entity';
 import { Room } from '../../room/entities/room.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Showing {
@@ -16,9 +23,12 @@ export class Showing {
     @Column({ type: 'time' })
     endAt: string;
 
-    @ManyToOne(() => Movie, (movie) => movie.id)
+    @ManyToOne(() => Movie, (movie) => movie.showing)
     movie: Movie;
 
-    @ManyToOne(() => Room, (room) => room.id)
+    @ManyToOne(() => Room, (room) => room.showing)
     room: Room;
+
+    @OneToMany(() => Seat, (seat) => seat.showing)
+    seat: Seat[];
 }

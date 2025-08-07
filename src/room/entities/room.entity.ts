@@ -1,7 +1,6 @@
 import { Showing } from '../../showing/entities/showing.entity';
 import { Cinema } from '../../cinema/entities/cinema.entity';
 import { ProjectionQuality } from '../../projection-quality/entities/projection-quality.entity';
-import { Seat } from '../../seat/entities/seat.entity';
 import {
     Column,
     Entity,
@@ -28,9 +27,6 @@ export class Room {
         onDelete: 'SET NULL',
     })
     projectionQuality: ProjectionQuality;
-
-    @OneToMany(() => Seat, (seat) => seat.room)
-    seat: Seat[];
 
     @OneToMany(() => Showing, (showing) => showing.room)
     showing: Showing[];
