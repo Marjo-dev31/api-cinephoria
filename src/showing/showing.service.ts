@@ -22,9 +22,9 @@ export class ShowingService {
                 movie: true,
                 room: {
                     cinema: true,
-                    seat: true,
                     projectionQuality: { price: true },
                 },
+                seat: true,
             },
         });
     }
