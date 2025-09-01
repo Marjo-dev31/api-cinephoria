@@ -11,6 +11,7 @@ import { CinemaModule } from './cinema/cinema.module';
 import { SeatModule } from './seat/seat.module';
 import { RoomModule } from './room/room.module';
 import { ShowingModule } from './showing/showing.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
     imports: [
@@ -26,6 +27,7 @@ import { ShowingModule } from './showing/showing.module';
         SeatModule,
         RoomModule,
         ShowingModule,
+        OrderModule,
     ],
     controllers: [AppController],
     providers: [AppService],

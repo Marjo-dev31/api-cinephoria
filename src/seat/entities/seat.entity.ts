@@ -1,3 +1,4 @@
+import { Order } from '../../order/entities/order.entity';
 import { Showing } from '../../showing/entities/showing.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -17,4 +18,7 @@ export class Seat {
 
     @ManyToOne(() => Showing, (showing) => showing.seat)
     showing: Showing;
+
+    @ManyToOne(() => Order, (order) => order.seat)
+    order: Order;
 }

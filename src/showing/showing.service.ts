@@ -29,8 +29,14 @@ export class ShowingService {
         });
     }
 
-    findOne(id: string) {
-        return `This action returns a #${id} session`;
+    async findOne(id: string) {
+        return await this.showingRepository.findOne({
+            relations: {
+                room: { cinema: true },
+                movie: true,
+            },
+            where: { id },
+        });
     }
 
     async update(id: string, updateShowingDto: UpdateShowingDto) {

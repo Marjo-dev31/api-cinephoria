@@ -32,7 +32,10 @@ export class MoviesService {
     async findOne(id: string): Promise<MovieDto | null> {
         return await this.movieRepository.findOne({
             relations: {
-                showing: { room: { projectionQuality: { price: true } } },
+                showing: {
+                    room: { projectionQuality: { price: true } },
+                    seat: true,
+                },
             },
             where: { id },
         });
