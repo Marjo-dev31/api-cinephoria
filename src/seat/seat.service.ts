@@ -28,6 +28,7 @@ export class SeatService {
             { id },
             {
                 reserved: updateSeatDto.reserved,
+                order: updateSeatDto.order,
             },
         );
     }

@@ -8,6 +8,7 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Order } from '../../order/entities/order.entity';
 
 @Entity()
 export class Showing {
@@ -31,4 +32,7 @@ export class Showing {
 
     @OneToMany(() => Seat, (seat) => seat.showing)
     seat: Seat[];
+
+    @OneToMany(() => Order, (order) => order.showing)
+    order: Order[];
 }
