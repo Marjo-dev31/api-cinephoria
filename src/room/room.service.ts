@@ -16,7 +16,12 @@ export class RoomService {
     // }
 
     async findAll() {
-        return await this.roomRepository.find();
+        return await this.roomRepository.find({
+            relations: {
+                cinema: true,
+                projectionQuality: true,
+            },
+        });
     }
 
     // findOne(id: string) {
