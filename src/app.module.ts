@@ -12,6 +12,8 @@ import { SeatModule } from './seat/seat.module';
 import { RoomModule } from './room/room.module';
 import { ShowingModule } from './showing/showing.module';
 import { OrderModule } from './order/order.module';
+import { ProjectionQualityController } from './projection-quality/projection-quality.controller';
+import { ProjectionQualityModule } from './projection-quality/projection-quality.module';
 
 @Module({
     imports: [
@@ -28,8 +30,9 @@ import { OrderModule } from './order/order.module';
         RoomModule,
         ShowingModule,
         OrderModule,
+        ProjectionQualityModule,
     ],
-    controllers: [AppController],
+    controllers: [AppController, ProjectionQualityController],
     providers: [AppService],
 })
 export class AppModule {}
