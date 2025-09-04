@@ -10,7 +10,6 @@ export class CreateMovieDto {
     @IsString()
     description: string;
 
-    @IsNotEmpty()
     @IsString()
     image_Url: string;
 

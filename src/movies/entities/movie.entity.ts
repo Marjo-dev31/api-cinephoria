@@ -21,7 +21,7 @@ export class Movie {
     @Column('text')
     description: string;
 
-    @Column()
+    @Column({ default: '' })
     image_Url: string;
 
     @Column('int', { default: 0 })
