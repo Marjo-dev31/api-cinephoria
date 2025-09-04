@@ -15,4 +15,8 @@ export class GenreService {
         const newGenre = this.genreRepository.create(createGenreDto);
         return await this.genreRepository.save(newGenre);
     }
+
+    async findAll() {
+        return await this.genreRepository.find();
+    }
 }
