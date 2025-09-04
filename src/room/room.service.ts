@@ -3,6 +3,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { ROOM_REPOSITORY } from './constants';
 import { Room } from './entities/room.entity';
+import { CreateRoomDto } from './dto/create-room.dto';
+import { UpdateRoomDto } from './dto/update-room.dto';
 // import { UpdateRoomDto } from './dto/update-room.dto';
 
 @Injectable()
@@ -11,9 +13,10 @@ export class RoomService {
         @Inject(ROOM_REPOSITORY) private roomRepository: Repository<Room>,
     ) {}
 
-    // create(createSeatDto: CreateSeatDto) {
-    //     return 'This action adds a new seat';
-    // }
+    async create(createRoomDto: CreateRoomDto) {
+        const newRoom = this.roomRepository.create(createRoomDto);
+        return await this.roomRepository.save(newRoom);
+    }
 
     async findAll() {
         return await this.roomRepository.find({
@@ -27,6 +30,18 @@ export class RoomService {
     // findOne(id: string) {
     //     return `This action returns a #${id} seat`;
     // }
+
+    async updateRoom(id: string, updateRoom: UpdateRoomDto) {
+        return await this.roomRepository.update(
+            { id },
+            {
+                number: updateRoom.number,
+                numberOfSeats: updateRoom.numberOfSeats,
+                cinema: updateRoom.cinema,
+                projectionQuality: updateRoom.projectionQuality,
+            },
+        );
+    }
 
     async updateNumberOfSales(id: string, reservation: number) {
         return await this.roomRepository.decrement(

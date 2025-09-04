@@ -12,7 +12,6 @@ import { SeatModule } from './seat/seat.module';
 import { RoomModule } from './room/room.module';
 import { ShowingModule } from './showing/showing.module';
 import { OrderModule } from './order/order.module';
-import { ProjectionQualityController } from './projection-quality/projection-quality.controller';
 import { ProjectionQualityModule } from './projection-quality/projection-quality.module';
 
 @Module({
@@ -32,7 +31,7 @@ import { ProjectionQualityModule } from './projection-quality/projection-quality
         OrderModule,
         ProjectionQualityModule,
     ],
-    controllers: [AppController, ProjectionQualityController],
+    controllers: [AppController],
     providers: [AppService],
 })
 export class AppModule {}
