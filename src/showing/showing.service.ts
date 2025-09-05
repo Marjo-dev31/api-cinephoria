@@ -44,11 +44,15 @@ export class ShowingService {
             { id },
             {
                 date: updateShowingDto.date,
+                startAt: updateShowingDto.startAt,
+                endAt: updateShowingDto.endAt,
+                movie: updateShowingDto.movie,
+                room: updateShowingDto.room,
             },
         );
     }
 
-    remove(id: string) {
-        return `This action removes a #${id} session`;
+    async remove(id: string) {
+        return await this.showingRepository.delete({ id });
     }
 }

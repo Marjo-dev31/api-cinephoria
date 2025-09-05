@@ -1,4 +1,14 @@
-import { Controller } from '@nestjs/common';
+import {
+    Controller,
+    FileTypeValidator,
+    MaxFileSizeValidator,
+    ParseFilePipe,
+    Post,
+    UploadedFile,
+    UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from './multer-options';
 
 @Controller('upload')
 export class UploadController {
@@ -7,4 +17,28 @@ export class UploadController {
     //     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     //     res.sendFile(id, { root: './uploads' });
     // }
+    @Post()
+    @UseInterceptors(FileInterceptor('file', multerOptions))
+    uploadFile(
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({
+                        maxSize: 5_000_000,
+                        message: 'Le fichier est trop volumineux (max 5 MB)',
+                    }),
+                    new FileTypeValidator({
+                        fileType: /^image\/(png|jpeg|jpg|webp)$/,
+                    }),
+                ],
+            }),
+        )
+        file: Express.Multer.File,
+    ) {
+        return {
+            message: 'Fichier uploadé avec succès',
+            filename: file.originalname,
+            size: file.size,
+        };
+    }
 }
