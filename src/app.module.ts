@@ -13,6 +13,7 @@ import { RoomModule } from './room/room.module';
 import { ShowingModule } from './showing/showing.module';
 import { OrderModule } from './order/order.module';
 import { ProjectionQualityModule } from './projection-quality/projection-quality.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { ProjectionQualityModule } from './projection-quality/projection-quality
         ShowingModule,
         OrderModule,
         ProjectionQualityModule,
+        UploadModule,
     ],
     controllers: [AppController],
     providers: [AppService],
