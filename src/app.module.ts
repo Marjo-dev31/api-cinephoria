@@ -14,6 +14,8 @@ import { ShowingModule } from './showing/showing.module';
 import { OrderModule } from './order/order.module';
 import { ProjectionQualityModule } from './projection-quality/projection-quality.module';
 import { UploadModule } from './upload/upload.module';
+import { UserModule } from './user/user.module';
+import { RoleModule } from './role/role.module';
 
 @Module({
     imports: [
@@ -32,6 +34,8 @@ import { UploadModule } from './upload/upload.module';
         OrderModule,
         ProjectionQualityModule,
         UploadModule,
+        UserModule,
+        RoleModule,
     ],
     controllers: [AppController],
     providers: [AppService],
