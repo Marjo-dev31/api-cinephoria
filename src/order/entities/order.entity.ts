@@ -1,3 +1,4 @@
+import { User } from '../../user/entities/user.entity';
 import { Seat } from '../../seat/entities/seat.entity';
 import { Showing } from '../../showing/entities/showing.entity';
 import {
@@ -27,6 +28,6 @@ export class Order {
     @OneToMany(() => Seat, (seat) => seat.order)
     seat: Seat[];
 
-    // @ManyToOne(() => User, (user) => user.order, { onDelete: 'CASCADE' })
-    // order: User;
+    @ManyToOne(() => User, (user) => user.order, { onDelete: 'CASCADE' })
+    user: User;
 }

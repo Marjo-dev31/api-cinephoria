@@ -1,5 +1,5 @@
 import { IsBoolean, IsNotEmpty, IsNumber } from 'class-validator';
-import { Showing } from 'src/showing/entities/showing.entity';
+import { Showing } from '../../showing/entities/showing.entity';
 
 export class CreateSeatDto {
     @IsNumber()

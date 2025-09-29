@@ -20,8 +20,11 @@ export class OrderService {
         return `This action returns all order`;
     }
 
-    findOne(id: string) {
-        return `This action returns a #${id} order`;
+    async findByUser(id: string) {
+        return await this.orderRepository.find({
+            where: { user: { id: id } },
+            relations: { showing: { movie: true, room: { cinema: true } } },
+        });
     }
 
     async update(id: string, updateOrderDto: UpdateOrderDto) {

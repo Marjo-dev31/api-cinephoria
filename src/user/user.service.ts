@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { USER_REPOSITORY } from './constants';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
-import * as bcrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
