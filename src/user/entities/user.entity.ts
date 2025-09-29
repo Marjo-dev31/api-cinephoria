@@ -1,6 +1,13 @@
 import { IsEmail, Min } from 'class-validator';
 import { Role } from '../../role/entities/role.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Order } from '../../order/entities/order.entity';
 
 @Entity()
 export class User {
@@ -26,4 +33,7 @@ export class User {
 
     @ManyToOne(() => Role, (role) => role.name, { onDelete: 'SET NULL' })
     role: Role;
+
+    @OneToMany(() => Order, (order) => order.user, { onDelete: 'SET NULL' })
+    order: Order[];
 }

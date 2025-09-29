@@ -5,6 +5,8 @@ services:
         restart: unless-stopped
         ports:
             - '3307:3306'
+        volumes:
+            - $HOME/database:/var/lib/mysql1
         environment:
             - MYSQL_USER=${MYSQL_DB_USERNAME}
             - MYSQL_PASSWORD=${MYSQL_DB_PASSWORD}
