@@ -8,6 +8,7 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Order } from '../../order/entities/order.entity';
+import { Review } from '../../reviews/entities/review.entity';
 
 @Entity()
 export class User {
@@ -36,4 +37,7 @@ export class User {
 
     @OneToMany(() => Order, (order) => order.user, { onDelete: 'SET NULL' })
     order: Order[];
+
+    @OneToMany(() => Review, (review) => review.user)
+    review: Review[];
 }

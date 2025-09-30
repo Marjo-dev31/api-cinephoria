@@ -1,3 +1,4 @@
+import { User } from '../../user/entities/user.entity';
 import { Movie } from '../../movies/entities/movie.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -17,4 +18,7 @@ export class Review {
 
     @ManyToOne(() => Movie, (movie) => movie.reviews, { onDelete: 'CASCADE' })
     movie: Movie;
+
+    @ManyToOne(() => User, (user) => user.review, { onDelete: 'SET NULL' })
+    user: User;
 }
