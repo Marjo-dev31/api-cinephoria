@@ -21,6 +21,7 @@ export class ReviewsService {
         return await this.reviewRepository.find({
             relations: {
                 movie: true,
+                user: true,
             },
         });
     }
