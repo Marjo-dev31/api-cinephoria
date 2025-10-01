@@ -94,7 +94,7 @@ BEGIN
 DECLARE i INT DEFAULT 1;
 
 WHILE i<=10 DO
--- insert into seat values (uuid(), i, false, false, iddelasalle) salle de 10 faire pareil pour 15 20 25
+-- insert into seat values (uuid(), i, false, false, iddelaseance) salle de 10 faire pareil pour 15 20 25
 INSERT INTO seat VALUES (uuid(), i, false, false, '53905558-7212-11f0-9e9c-36b09edbb3e4');
 INSERT INTO seat VALUES (uuid(), i, false, false, 'ab244dfb-7211-11f0-9e9c-36b09edbb3e4');
 INSERT INTO seat VALUES (uuid(), i, false, false, 'ab245753-7211-11f0-9e9c-36b09edbb3e4');
@@ -119,7 +119,7 @@ BEGIN
 DECLARE i INT DEFAULT 1;
 
 WHILE i<=15 DO
--- insert into seat values (uuid(), i, false, false, iddelasalle)
+-- insert into seat values (uuid(), i, false, false, iddelaseance)
 INSERT INTO seat VALUES (uuid(), i, false, false, '53904b02-7212-11f0-9e9c-36b09edbb3e4');
 INSERT INTO seat VALUES (uuid(), i, false, false, 'ab244423-7211-11f0-9e9c-36b09edbb3e4');
 INSERT INTO seat VALUES (uuid(), i, false, false, 'ab2451a5-7211-11f0-9e9c-36b09edbb3e4');
@@ -143,7 +143,7 @@ BEGIN
 DECLARE i INT DEFAULT 1;
 
 WHILE i<=18 DO
--- insert into seat values (uuid(), i, false, false, iddelasalle)
+-- insert into seat values (uuid(), i, false, false, iddelaseance)
 INSERT INTO seat VALUES (uuid(), i, false, false, '53905187-7212-11f0-9e9c-36b09edbb3e4');
 INSERT INTO seat VALUES (uuid(), i, false, false, 'ab244aaa-7211-11f0-9e9c-36b09edbb3e4');
 INSERT INTO seat VALUES (uuid(), i, false, false, 'ab245edb-7211-11f0-9e9c-36b09edbb3e4');
@@ -167,7 +167,7 @@ BEGIN
 DECLARE i INT DEFAULT 1;
 
 WHILE i<=20 DO
--- insert into seat values (uuid(), i, false, false, iddelasalle)
+-- insert into seat values (uuid(), i, false, false, iddelaseance)
 INSERT INTO seat VALUES (uuid(), i, false, false, '53903d25-7212-11f0-9e9c-36b09edbb3e4');
 INSERT INTO seat VALUES (uuid(), i, false, false, 'ab2416f0-7211-11f0-9e9c-36b09edbb3e4');
 INSERT INTO seat VALUES (uuid(), i, false, false, 'ab245466-7211-11f0-9e9c-36b09edbb3e4');

@@ -26,10 +26,10 @@ export class RoomController {
         return this.roomService.findAll();
     }
 
-    // @Get(':id')
-    // findOne(@Param('id') id: string) {
-    //     return this.roomService.findOne(id);
-    // }
+    @Get('id')
+    findRoomById(@Param('id') id: string) {
+        return this.roomService.findRoomById(id);
+    }
 
     // @Patch(':id')
     // update(@Param('id') id: string, @Body() reservation: number) {
