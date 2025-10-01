@@ -30,6 +30,11 @@ export class ShowingController {
         return this.showingService.findOne(id);
     }
 
+    @Get('room/:id')
+    findShowingByRoomId(@Param('id') id: string) {
+        return this.showingService.findShowingByRoomId(id);
+    }
+
     @Patch(':id')
     update(
         @Param('id') id: string,

@@ -5,7 +5,6 @@ import { ROOM_REPOSITORY } from './constants';
 import { Room } from './entities/room.entity';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
-// import { UpdateRoomDto } from './dto/update-room.dto';
 
 @Injectable()
 export class RoomService {
@@ -30,6 +29,12 @@ export class RoomService {
     // findOne(id: string) {
     //     return `This action returns a #${id} seat`;
     // }
+
+    async findRoomById(id: string) {
+        return await this.roomRepository.findOne({
+            where: { id },
+        });
+    }
 
     async updateRoom(id: string, updateRoom: UpdateRoomDto) {
         return await this.roomRepository.update(
