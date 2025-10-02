@@ -28,6 +28,11 @@ export class MoviesController {
         return this.moviesService.findAll();
     }
 
+    @Get('sales')
+    findAllSales() {
+        return this.moviesService.findAllSales();
+    }
+
     @Get(':id')
     findOne(@Param('id') id: string) {
         return this.moviesService.findOne(id);

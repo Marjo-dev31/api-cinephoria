@@ -1,18 +1,27 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { MovieDto, UpdateMovieDto } from './dto/update-movie.dto';
-import { MOVIE_REPOSITORY } from './constants';
+import { MOVIE_MONGO_REPOSITORY, MOVIE_REPOSITORY } from './constants';
 import { Repository } from 'typeorm';
 import { Movie } from './entities/movie.entity';
+import { MovieMongo } from './entities/movie.mongo';
 
 @Injectable()
 export class MoviesService {
     constructor(
         @Inject(MOVIE_REPOSITORY)
         private movieRepository: Repository<Movie>,
+        @Inject(MOVIE_MONGO_REPOSITORY)
+        private movieMongoRepository: Repository<MovieMongo>,
     ) {}
 
     async create(createMovieDto: CreateMovieDto) {
+        const movieTitle = createMovieDto.title;
+        const newMovieOnMongo = this.movieMongoRepository.create({
+            title: movieTitle,
+        });
+        await this.movieMongoRepository.save(newMovieOnMongo);
+
         const newMovie = this.movieRepository.create(createMovieDto);
         return await this.movieRepository.save(newMovie);
     }
@@ -27,6 +36,10 @@ export class MoviesService {
                 },
             },
         });
+    }
+
+    async findAllSales() {
+        return await this.movieMongoRepository.find();
     }
 
     async findOne(id: string): Promise<MovieDto | null> {

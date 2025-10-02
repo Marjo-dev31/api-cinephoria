@@ -2,7 +2,7 @@ services:
     mysql_db:
         container_name: mysqlcontainer
         image: mysql:8
-        restart: unless-stopped
+        restart: always
         ports:
             - '3307:3306'
         volumes:
@@ -14,16 +14,35 @@ services:
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
         networks:
             - internalnet
+
+    mongodb:
+        image: mongo:latest
+        container_name: mongodb
+        restart: always
+        environment:
+            - MONGO_INITDB_DATABASE=${MONGO_DB}
+            - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
+            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
+        ports:
+            - "27017:27017"
+        volumes:
+            - mongodb_data:/data/db
+        networks:
+            - internalnet
+
     nestjs_api:
         container_name: nodeappcontainer
         build:
             context: .
             dockerfile: Dockerfile
         restart: always
+        env_file:
+            - .env
         ports:
-            - '3000:3000'
+            - '${PORT}:3000'
         depends_on:
             - mysql_db
+            - mongodb
         environment:
             - PORT=${PORT}
             - NODE_ENV=development
@@ -32,11 +51,22 @@ services:
             - MYSQL_DB_USERNAME=${MYSQL_DB_USERNAME}
             - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD}
             - MYSQL_DB_DATABASE=${MYSQL_DB_DATABASE}
+            - MONGO_HOST=mongodb
+            - MONGO_PORT=27017
+            - MONGO_USERNAME=${MONGO_USERNAME}
+            - MONGO_PASSWORD=${MONGO_PASSWORD}
+            - MONGO_DB=${MONGO_DB}
+            - MONGO_URI=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DB}?authSource=admin
         volumes:
             - ./src:/usr/src/app/src
             - ./uploads:/usr/src/app/uploads
         networks:
             - internalnet
+
+volumes:
+  mongodb_data:
+    driver: local
+
 networks:
   internalnet:
     driver: bridge

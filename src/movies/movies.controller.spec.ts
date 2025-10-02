@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MoviesController } from './movies.controller';
 import { MoviesService } from './movies.service';
-import { MOVIE_REPOSITORY } from './constants';
+import { MOVIE_MONGO_REPOSITORY, MOVIE_REPOSITORY } from './constants';
 
 describe('MoviesController', () => {
     let controller: MoviesController;
@@ -12,6 +12,10 @@ describe('MoviesController', () => {
             providers: [
                 MoviesService,
                 { provide: MOVIE_REPOSITORY, useValue: 'MOVIE_REPOSITORY' },
+                {
+                    provide: MOVIE_MONGO_REPOSITORY,
+                    useValue: 'MOVIE_MONGO_REPOSITORY',
+                },
             ],
         }).compile();
 
