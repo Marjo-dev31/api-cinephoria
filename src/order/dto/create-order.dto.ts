@@ -1,4 +1,4 @@
-import { IsArray, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsNumber } from 'class-validator';
 import { Showing } from '../../showing/entities/showing.entity';
 import { Seat } from '../../seat/entities/seat.entity';
 import { User } from '../../user/entities/user.entity';
@@ -10,7 +10,6 @@ export class CreateOrderDto {
     @IsNumber({ maxDecimalPlaces: 2 })
     total: number;
 
-    @IsString()
     @IsNotEmpty()
     showing: Showing;
 

@@ -16,6 +16,7 @@ export class MoviesService {
     ) {}
 
     async create(createMovieDto: CreateMovieDto) {
+        console.log(createMovieDto);
         const newMovie = this.movieRepository.create(createMovieDto);
         return await this.movieRepository.save(newMovie);
     }

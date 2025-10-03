@@ -1,6 +1,5 @@
 import {
     Controller,
-    FileTypeValidator,
     MaxFileSizeValidator,
     ParseFilePipe,
     Post,
@@ -31,9 +30,6 @@ export class UploadController {
                         maxSize: 5_000_000,
                         message: 'Le fichier est trop volumineux (max 5 MB)',
                     }),
-                    new FileTypeValidator({
-                        fileType: /^image\/(png|jpeg|jpg|webp)$/,
-                    }),
                 ],
             }),
         )
@@ -42,6 +38,7 @@ export class UploadController {
         return {
             message: 'Fichier uploadé avec succès',
             filename: file.originalname,
+            path: `/uploads/${file.filename}`,
             size: file.size,
         };
     }
