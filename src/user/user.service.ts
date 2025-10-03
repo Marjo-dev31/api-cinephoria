@@ -86,7 +86,7 @@ export class UserService {
     async createJwt(user: User) {
         const payload = {
             id: user.id,
-            email: user.mail,
+            mail: user.mail,
             role: user.role,
         };
         return await this.jwtService.signAsync(payload);
