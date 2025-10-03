@@ -5,10 +5,12 @@ import {
     ParseFilePipe,
     Post,
     UploadedFile,
+    UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from './multer-options';
+import { AuthGuard } from '../user/auth.guard';
 
 @Controller('upload')
 export class UploadController {
@@ -17,6 +19,8 @@ export class UploadController {
     //     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     //     res.sendFile(id, { root: './uploads' });
     // }
+
+    @UseGuards(AuthGuard)
     @Post()
     @UseInterceptors(FileInterceptor('file', multerOptions))
     uploadFile(

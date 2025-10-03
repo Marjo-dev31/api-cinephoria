@@ -3,9 +3,15 @@ import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { ORDER_REPOSITORY } from './constants';
 import { MOVIE_MONGO_REPOSITORY } from '../movies/constants';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 describe('OrderController', () => {
     let controller: OrderController;
+    const mockJwtService: Partial<JwtService> = {};
+    const mockConfigService: Partial<ConfigService> = {
+        get: jest.fn(),
+    };
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -16,6 +22,11 @@ describe('OrderController', () => {
                 {
                     provide: MOVIE_MONGO_REPOSITORY,
                     useValue: 'MOVIE_MONGO_REPOSITORY',
+                },
+                { provide: JwtService, useValue: mockJwtService as JwtService },
+                {
+                    provide: ConfigService,
+                    useValue: mockConfigService as ConfigService,
                 },
             ],
         }).compile();
