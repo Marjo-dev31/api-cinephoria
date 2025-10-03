@@ -15,13 +15,14 @@ export class OrderService {
         @Inject(MOVIE_MONGO_REPOSITORY)
         private movieMongoRepository: MongoRepository<MovieMongo>,
     ) {}
+
     async create(createOrderDto: CreateOrderDto) {
         const newOrder = this.orderRepository.create(createOrderDto);
-        await this.movieMongoRepository.increment(
-            { title: createOrderDto.showing.movie.title },
-            'nbOfSales',
-            createOrderDto.quantity,
-        );
+        const newSalesOnMongo = this.movieMongoRepository.create({
+            title: createOrderDto.showing.movie.title,
+            nbOfSales: createOrderDto.quantity,
+        });
+        await this.movieMongoRepository.save(newSalesOnMongo);
         return await this.orderRepository.save(newOrder);
     }
 
