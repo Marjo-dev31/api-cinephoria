@@ -16,12 +16,6 @@ export class MoviesService {
     ) {}
 
     async create(createMovieDto: CreateMovieDto) {
-        const movieTitle = createMovieDto.title;
-        const newMovieOnMongo = this.movieMongoRepository.create({
-            title: movieTitle,
-        });
-        await this.movieMongoRepository.save(newMovieOnMongo);
-
         const newMovie = this.movieRepository.create(createMovieDto);
         return await this.movieRepository.save(newMovie);
     }
