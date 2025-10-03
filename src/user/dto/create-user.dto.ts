@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+    IsEmail,
+    IsNotEmpty,
+    IsString,
+    IsStrongPassword,
+    MinLength,
+} from 'class-validator';
 import { Role } from '../../role/entities/role.entity';
 
 export class CreateUserDto {
@@ -14,10 +20,11 @@ export class CreateUserDto {
     @IsEmail()
     mail: string;
 
+    @MinLength(12)
     @IsString()
+    @IsStrongPassword() // default options: { minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1}
     password: string;
 
-    @IsString()
     role: Role;
 
     @IsString()

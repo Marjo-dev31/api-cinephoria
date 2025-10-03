@@ -33,7 +33,13 @@ export class OrderService {
     async findByUser(id: string) {
         return await this.orderRepository.find({
             where: { user: { id: id } },
-            relations: { showing: { movie: true, room: { cinema: true } } },
+            relations: {
+                showing: {
+                    movie: true,
+                    room: { cinema: true, projectionQuality: true },
+                },
+                seat: true,
+            },
         });
     }
 
