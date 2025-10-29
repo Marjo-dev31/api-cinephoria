@@ -8,6 +8,7 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Incident } from '../../incident/entities/incident.entity';
 
 @Entity()
 export class Room {
@@ -30,4 +31,7 @@ export class Room {
 
     @OneToMany(() => Showing, (showing) => showing.room)
     showing: Showing[];
+
+    @OneToMany(() => Incident, (incident) => incident.room)
+    incident: Incident[];
 }

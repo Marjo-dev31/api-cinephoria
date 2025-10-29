@@ -16,6 +16,7 @@ import { ProjectionQualityModule } from './projection-quality/projection-quality
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
+import { IncidentModule } from './incident/incident.module';
 
 @Module({
     imports: [
@@ -36,6 +37,7 @@ import { RoleModule } from './role/role.module';
         UploadModule,
         UserModule,
         RoleModule,
+        IncidentModule,
     ],
     controllers: [AppController],
     providers: [AppService],
