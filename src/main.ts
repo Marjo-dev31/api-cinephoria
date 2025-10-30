@@ -24,6 +24,7 @@ async function bootstrap() {
                         "'self'",
                         'http://localhost:4200',
                         'http://localhost:3000',
+                        'http://localhost:8100',
                         'data:',
                         'blob:',
                     ],
@@ -35,7 +36,7 @@ async function bootstrap() {
     );
     app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
     app.enableCors({
-        origin: 'http://localhost:4200',
+        origin: ['http://localhost:4200', 'http://localhost:8100'],
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         credentials: true,
     });

@@ -16,7 +16,9 @@ export class Seat {
     @Column({ default: false })
     reserved: boolean;
 
-    @ManyToOne(() => Showing, (showing) => showing.seat)
+    @ManyToOne(() => Showing, (showing) => showing.seat, {
+        onDelete: 'CASCADE',
+    })
     showing: Showing;
 
     @ManyToOne(() => Order, (order) => order.seat)

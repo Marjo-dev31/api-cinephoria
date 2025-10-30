@@ -1,5 +1,6 @@
-import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Movie } from '../../movies/entities/movie.entity';
+import { User } from '../../user/entities/user.entity';
 
 export class CreateReviewDto {
     @IsNotEmpty()
@@ -10,12 +11,9 @@ export class CreateReviewDto {
     @IsNumber()
     grade: number;
 
-    @IsBoolean()
-    is_Validated: boolean;
-
     @IsNotEmpty()
     movie: Movie;
 
-    @IsString()
-    username: string;
+    @IsNotEmpty()
+    user: User;
 }
