@@ -8,12 +8,12 @@ export class UpdateMovieDto extends PartialType(CreateMovieDto) {
     @IsString()
     id: string;
 
-    @IsDate()
-    create_At: Date;
-
     reviews: UpdateReviewDto[];
 }
 
 export class MovieDto extends PartialType(UpdateMovieDto) {
     showing: Showing[];
+
+    @IsDate()
+    create_At: Date;
 }

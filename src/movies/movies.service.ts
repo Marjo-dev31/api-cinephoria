@@ -16,7 +16,6 @@ export class MoviesService {
     ) {}
 
     async create(createMovieDto: CreateMovieDto) {
-        console.log(createMovieDto);
         const newMovie = this.movieRepository.create(createMovieDto);
         return await this.movieRepository.save(newMovie);
     }
@@ -56,7 +55,7 @@ export class MoviesService {
                 title: updateMovieDto.title,
                 description: updateMovieDto.description,
                 image_Url: updateMovieDto.image_Url,
-                minimun_Age: updateMovieDto.minimun_Age,
+                minimum_Age: updateMovieDto.minimum_Age,
                 is_Favorite: updateMovieDto.is_Favorite,
                 genre: updateMovieDto.genre,
             },

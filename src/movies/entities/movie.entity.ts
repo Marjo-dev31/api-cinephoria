@@ -25,7 +25,7 @@ export class Movie {
     image_Url: string;
 
     @Column('int', { default: 0 })
-    minimun_Age: number;
+    minimum_Age: number;
 
     @Column({ default: false })
     is_Favorite: boolean;

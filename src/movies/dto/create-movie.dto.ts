@@ -1,4 +1,4 @@
-import { IsBoolean, IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { Genre } from '../../genre/entities/genre.entity';
 
 export class CreateMovieDto {
@@ -13,7 +13,8 @@ export class CreateMovieDto {
     @IsString()
     image_Url: string;
 
-    minimun_Age: number;
+    @IsNumber()
+    minimum_Age: number;
 
     @IsBoolean()
     is_Favorite: boolean;
