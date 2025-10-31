@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CountryService } from './country.service';
 import { CountryController } from './country.controller';
-import { DatabaseModule } from 'src/config/database.module';
+import { DatabaseModule } from '../config/database.module';
 import { countryProviders } from './country.provider';
 
 @Module({
