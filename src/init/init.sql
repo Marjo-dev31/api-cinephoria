@@ -107,7 +107,7 @@ END //
 
 DELIMITER ;
 
-CALL insert_ten_seat_loop()
+-- CALL insert_ten_seat_loop()
 
 -- for numberOfSeats = 15
 
@@ -179,5 +179,47 @@ SET i = i + 1;
 END WHILE;
 
 END // 
+
+DELIMITER ;
+
+
+-- transaction création des sièges lors de la création d'une séance en fonction du nombre de place de la salle sélectionnée et avec 10% de siège réservés à mobilité réduite
+
+DELIMITER $$
+
+CREATE PROCEDURE CreateShowing(
+    IN p_showing_id CHAR(36),
+    IN p_date DATETIME,
+    IN p_startAt TIME,
+    IN p_endAt TIME,
+    IN p_movieId CHAR(36),
+    IN p_roomId CHAR(36),
+    IN p_numberOfSeats INT
+)
+BEGIN
+    DECLARE i INT DEFAULT 1;
+    DECLARE accessibleSeats INT DEFAULT CEIL(p_numberOfSeats * 0.1);
+    DECLARE seat_id CHAR(36);
+
+    START TRANSACTION;
+
+    INSERT INTO showing (id, date, startAt, endAt, movieId, roomId)
+    VALUES (p_showing_id, p_date, p_startAt, p_endAt, p_movieId, p_roomId);
+
+    WHILE i <= p_numberOfSeats DO
+        SET seat_id = UUID();
+        INSERT INTO seat (id, number, accessibleSeat, reserved, showingId)
+        VALUES (
+            seat_id,
+            i,
+            IF(i <= accessibleSeats, TRUE, FALSE),
+            FALSE,
+            p_showing_id
+        );
+        SET i = i + 1;
+    END WHILE;
+
+    COMMIT;
+END$$
 
 DELIMITER ;

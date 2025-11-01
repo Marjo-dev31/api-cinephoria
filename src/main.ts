@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
@@ -25,6 +22,8 @@ async function bootstrap() {
                         'http://localhost:4200',
                         'http://localhost:3000',
                         'http://localhost:8100',
+                        'http://cinephoria-web.s3-website.eu-west-3.amazonaws.com',
+                        'dykoa3a9xthu7.cloudfront.net',
                         'data:',
                         'blob:',
                     ],
@@ -36,7 +35,12 @@ async function bootstrap() {
     );
     app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
     app.enableCors({
-        origin: ['http://localhost:4200', 'http://localhost:8100'],
+        origin: [
+            'http://localhost:4200',
+            'http://localhost:8100',
+            'http://cinephoria-web.s3-website.eu-west-3.amazonaws.com',
+            'dykoa3a9xthu7.cloudfront.net',
+        ],
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         credentials: true,
     });
@@ -52,6 +56,7 @@ async function bootstrap() {
     await app.listen(PORT, () => {
         console.log(
             `Running API in mode: ${configService.get('NODE_ENV')} on port: ${PORT}`,
+            `mysql: ${configService.get('MYSQL_DB_HOST')}`,
         );
     });
 }

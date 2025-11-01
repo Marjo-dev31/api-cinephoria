@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule } from '@nestjs/config';
+// import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './config/database.module';
 import { MoviesModule } from './movies/movies.module';
 import { GenreModule } from './genre/genre.module';
@@ -17,12 +17,13 @@ import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { IncidentModule } from './incident/incident.module';
+import { CustomConfigModule } from './helpers/custom-config.module';
 
 @Module({
     imports: [
-        ConfigModule.forRoot({
-            isGlobal: true,
-        }),
+        // ConfigModule.forRoot({
+        //     isGlobal: true,
+        // }),
         DatabaseModule,
         MoviesModule,
         GenreModule,
@@ -38,6 +39,7 @@ import { IncidentModule } from './incident/incident.module';
         UserModule,
         RoleModule,
         IncidentModule,
+        CustomConfigModule,
     ],
     controllers: [AppController],
     providers: [AppService],
