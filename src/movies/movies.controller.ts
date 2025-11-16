@@ -17,8 +17,6 @@ import { AuthGuard } from '../user/auth.guard';
 export class MoviesController {
     constructor(private readonly moviesService: MoviesService) {}
 
-    // add guard and roleguard
-
     @UseGuards(AuthGuard)
     @Post()
     create(@Body() createMovieDto: CreateMovieDto) {
