@@ -7,23 +7,30 @@ import {
     SecretsManagerClient,
     GetSecretValueCommand,
 } from '@aws-sdk/client-secrets-manager';
+import { ConfigService } from '@nestjs/config';
 
 const ISPRODUCTION = true;
 
 export const fetchSecrets = async (secretName: string) => {
     if (ISPRODUCTION) {
+        new ConfigService();
         const client = new SecretsManagerClient({
             region: 'eu-west-3',
         });
         try {
-            const response = (await client.send(
+            const response = await client.send(
                 new GetSecretValueCommand({
                     SecretId: secretName,
                     VersionStage: 'AWSCURRENT',
                 }),
-            )) as any;
-            return JSON.parse(response.SecretString);
+            );
+            if (response.SecretString) {
+                return JSON.parse(response.SecretString);
+            } else {
+                return undefined;
+            }
         } catch (error) {
+            console.log('catcherror');
             throw error;
         }
     } else {

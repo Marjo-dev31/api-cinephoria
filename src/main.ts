@@ -5,10 +5,11 @@ import * as express from 'express';
 import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
+import { CustomConfigModule } from './helpers/custom-config.module';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
-    const configService = app.get(ConfigService);
+    const configService = app.select(CustomConfigModule).get(ConfigService);
     const PORT = configService.get<number>('PORT', 3000);
 
     app.use(
@@ -53,7 +54,7 @@ async function bootstrap() {
         }),
     );
 
-    await app.listen(PORT, () => {
+    await app.listen(process.env.PORT ?? 3000, '0.0.0.0', () => {
         console.log(
             `Running API in mode: ${configService.get('NODE_ENV')} on port: ${PORT}`,
             `mysql: ${configService.get('MYSQL_DB_HOST')}`,

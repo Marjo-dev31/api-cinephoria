@@ -8,4 +8,8 @@ import { mongoProviders } from './mongo.providers';
     providers: [...databaseProviders, ...mongoProviders],
     exports: [...databaseProviders, ...mongoProviders],
 })
-export class DatabaseModule {}
+export class DatabaseModule {
+    constructor() {
+        console.log('moduleinit');
+    }
+}
