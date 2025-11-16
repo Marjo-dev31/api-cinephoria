@@ -24,7 +24,7 @@ import { CustomConfigModule } from './helpers/custom-config.module';
         // ConfigModule.forRoot({
         //     isGlobal: true,
         // }),
-        DatabaseModule,
+        CustomConfigModule,
         MoviesModule,
         GenreModule,
         ReviewsModule,
@@ -39,7 +39,7 @@ import { CustomConfigModule } from './helpers/custom-config.module';
         UserModule,
         RoleModule,
         IncidentModule,
-        CustomConfigModule,
+        DatabaseModule,
     ],
     controllers: [AppController],
     providers: [AppService],
