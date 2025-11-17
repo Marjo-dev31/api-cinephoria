@@ -24,7 +24,7 @@ async function bootstrap() {
                         'http://localhost:3000',
                         'http://localhost:8100',
                         'http://cinephoria-web.s3-website.eu-west-3.amazonaws.com',
-                        'dykoa3a9xthu7.cloudfront.net',
+                        'https://dykoa3a9xthu7.cloudfront.net',
                         'https://d29qqvaob7rvyi.cloudfront.net',
                         'data:',
                         'blob:',

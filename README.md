@@ -25,6 +25,32 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Prerequisites
+
+node
+npm
+nestjs
+
+environments variables:
+
+NODE_ENV=
+MYSQL_DB_HOST=
+MYSQL_DB_PORT=
+MYSQL_DB_USERNAME=
+MYSQL_DB_PASSWORD=
+MYSQL_DB_DATABASE=
+PORT=
+MYSQL_ROOT_PASSWORD=
+SECRET_TOKEN=
+MONGO_URI=
+MONGO_DB=
+MONGO_PASSWORD=
+MONGO_USERNAME=
+
+```bash
+git clone https://github.com/Marjo-dev31/api-cinephoria.git
+```
+
 ## Project setup
 
 ```bash
