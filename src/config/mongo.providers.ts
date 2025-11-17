@@ -13,10 +13,10 @@ export const mongoProviders = [
             const dataSource = new DataSource({
                 name: 'mongoDb',
                 type: 'mongodb',
-                url: secrets.MONGO_URI,
-                database: secrets.MONGO_DB,
-                password: secrets.MONGO_PASSWORD,
-                username: secrets.MONGO_USERNAME,
+                url: secrets.uri,
+                database: secrets.name,
+                password: secrets.password,
+                username: secrets.username,
                 entities: [__dirname + '/../**/*.mongo{.ts,.js}'],
                 // make sure is false in production
                 synchronize: true,

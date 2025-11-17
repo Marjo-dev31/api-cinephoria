@@ -7,13 +7,11 @@ import {
     SecretsManagerClient,
     GetSecretValueCommand,
 } from '@aws-sdk/client-secrets-manager';
-import { ConfigService } from '@nestjs/config';
 
-const ISPRODUCTION = true;
+const ISPRODUCTION = false;
 
 export const fetchSecrets = async (secretName: string) => {
     if (ISPRODUCTION) {
-        new ConfigService();
         const client = new SecretsManagerClient({
             region: 'eu-west-3',
         });
@@ -49,6 +47,7 @@ export const fetchSecrets = async (secretName: string) => {
             NODE_ENV: process.env.NODE_ENV,
             PORT: process.env.PORT,
         };
+        console.log(response);
         return response;
     }
 };
