@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
-import { fetchSecrets } from 'src/helpers/fetch-secrets';
+//import { fetchSecrets } from 'src/helpers/fetch-secrets';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -28,9 +28,9 @@ export class AuthGuard implements CanActivate {
             }
 
             const authToken: string = authorization.split(' ')[1];
-            const secrets = await fetchSecrets('prod-jodb');
+            //const secrets = await fetchSecrets('prod-jodb');
             const payload = await this.jwtService.verifyAsync(authToken, {
-                secret: secrets.SECRET_TOKEN,
+                secret: this.configService.getOrThrow('SECRET_TOKEN'),
             });
             request['user'] = payload;
         } catch (error) {

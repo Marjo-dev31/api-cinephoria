@@ -8,7 +8,6 @@ import { userProviders } from './user.providers';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthGuard } from './auth.guard';
-import { fetchSecrets } from 'src/helpers/fetch-secrets';
 
 @Module({
     imports: [
@@ -16,12 +15,11 @@ import { fetchSecrets } from 'src/helpers/fetch-secrets';
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
-            useFactory: async (): Promise<JwtModuleOptions> => {
-                const secrets = await fetchSecrets('prod-jodb');
-                const SECRET_TOKEN = secrets.SECRET_TOKEN;
-
+            useFactory: (configService: ConfigService): JwtModuleOptions => {
                 return {
-                    secret: SECRET_TOKEN,
+                    secret:
+                        configService.get<string>('SECRET_TOKEN') ??
+                        'default_secret',
                     signOptions: {
                         expiresIn: '3h',
                     },

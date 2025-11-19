@@ -9,7 +9,7 @@ import {
 } from '@aws-sdk/client-secrets-manager';
 import { ConfigService } from '@nestjs/config';
 
-const ISPRODUCTION = true;
+const ISPRODUCTION = false;
 
 export const fetchSecrets = async (secretName: string) => {
     if (ISPRODUCTION) {

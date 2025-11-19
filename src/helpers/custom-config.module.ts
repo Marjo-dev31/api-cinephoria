@@ -7,7 +7,7 @@ import secretManagerConfig from './secret-manager.config';
         ConfigModule.forRoot({
             load: [secretManagerConfig],
             isGlobal: true,
-            // envFilePath: `.env.${process.env.NODE_ENV}`,
+            envFilePath: `.env.${process.env.NODE_ENV}`,
         }),
     ],
 })
