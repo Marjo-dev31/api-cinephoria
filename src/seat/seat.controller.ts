@@ -1,7 +1,9 @@
 import { Controller, Get, Body, Patch, Param, Delete } from '@nestjs/common';
 import { SeatService } from './seat.service';
 import { UpdateSeatDto } from './dto/update-seat.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Places')
 @Controller('seat')
 export class SeatController {
     constructor(private readonly seatService: SeatService) {}

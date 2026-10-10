@@ -1,12 +1,12 @@
 services:
     mysql_db:
         container_name: mysqlcontainer
-        image: mysql:8
+        image: mysql:8.4
         restart: always
         ports:
             - '3307:3306'
         volumes:
-            - $HOME/database:/var/lib/mysql1
+            - mysql_data:/var/lib/mysql
         environment:
             - MYSQL_USER=${MYSQL_DB_USERNAME}
             - MYSQL_PASSWORD=${MYSQL_DB_PASSWORD}
@@ -14,9 +14,14 @@ services:
             - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
         networks:
             - internalnet
+        healthcheck:
+            test: ['CMD-SHELL', 'mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD']
+            interval: 10s
+            timeout: 5s
+            retries: 10
 
     mongodb:
-        image: mongo:latest
+        image: mongo:8
         container_name: mongodb
         restart: always
         environment:
@@ -29,6 +34,11 @@ services:
             - mongodb_data:/data/db
         networks:
             - internalnet
+        healthcheck:
+            test: ['CMD-SHELL', 'mongosh --username "$$MONGO_INITDB_ROOT_USERNAME" --password "$$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase admin --quiet --eval "db.adminCommand(\"ping\")"']
+            interval: 10s
+            timeout: 5s
+            retries: 10
 
     nestjs_api:
         container_name: nodeappcontainer
@@ -39,15 +49,19 @@ services:
         env_file:
             - .env
         ports:
-            - '${PORT}:3000'
+            - '${PORT}:${PORT}'
         depends_on:
-            - mysql_db
-            - mongodb
+            mysql_db:
+                condition: service_healthy
+            mongodb:
+                condition: service_healthy
         environment:
             - PORT=${PORT}
             - NODE_ENV=development
             - MYSQL_DB_HOST=mysql_db
-            - MYSQL_DB_PORT=${MYSQL_DB_PORT}
+            # 3306 is MySQL's port inside the Docker network.
+            # 3307 is only used from the host machine.
+            - MYSQL_DB_PORT=3306
             - MYSQL_DB_USERNAME=${MYSQL_DB_USERNAME}
             - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD}
             - MYSQL_DB_DATABASE=${MYSQL_DB_DATABASE}
@@ -64,6 +78,8 @@ services:
             - internalnet
 
 volumes:
+  mysql_data:
+    driver: local
   mongodb_data:
     driver: local
 

@@ -1,7 +1,9 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { IncidentService } from './incident.service';
 import { CreateIncidentDto } from './dto/create-incident.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Incidents')
 @Controller('incident')
 export class IncidentController {
     constructor(private readonly incidentService: IncidentService) {}

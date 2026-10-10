@@ -13,11 +13,14 @@ import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { AuthGuard } from '../user/auth.guard';
 import { Roles } from '../role/roles-guard/roles.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Avis')
 @Controller('reviews')
 export class ReviewsController {
     constructor(private readonly reviewsService: ReviewsService) {}
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post()
     create(@Body() createReviewDto: CreateReviewDto) {
@@ -34,6 +37,7 @@ export class ReviewsController {
     //     return this.reviewsService.findOne(id);
     // }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Patch(':id')
     @Roles(['employee'])
@@ -41,6 +45,7 @@ export class ReviewsController {
         return this.reviewsService.update(id, updateReviewDto);
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Delete(':id')
     remove(@Param('id') id: string) {

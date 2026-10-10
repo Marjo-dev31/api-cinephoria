@@ -5,22 +5,22 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Seat {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id!: string;
 
     @Column()
-    number: number;
+    number!: number;
 
     @Column({ default: false })
-    accessibleSeat: boolean;
+    accessibleSeat!: boolean;
 
     @Column({ default: false })
-    reserved: boolean;
+    reserved!: boolean;
 
     @ManyToOne(() => Showing, (showing) => showing.seat, {
         onDelete: 'CASCADE',
     })
-    showing: Showing;
+    showing!: Showing;
 
     @ManyToOne(() => Order, (order) => order.seat)
-    order: Order;
+    order!: Order;
 }

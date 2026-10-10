@@ -4,14 +4,14 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Price {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id!: string;
 
     @Column('decimal', { precision: 10, scale: 2 })
-    price: number;
+    price!: number;
 
     @OneToMany(
         () => ProjectionQuality,
         (projectionQuality) => projectionQuality.price,
     )
-    projectionQuality: ProjectionQuality[];
+    projectionQuality!: ProjectionQuality[];
 }
