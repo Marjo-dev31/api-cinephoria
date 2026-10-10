@@ -11,11 +11,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from './multer-options';
 import { AuthGuard } from '../user/auth.guard';
 import {
+    ApiBadRequestResponse,
     ApiBearerAuth,
     ApiBody,
     ApiConsumes,
+    ApiInternalServerErrorResponse,
     ApiOperation,
     ApiTags,
+    ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 
 @ApiTags('Fichiers')
@@ -41,6 +44,16 @@ export class UploadController {
     })
     @UseGuards(AuthGuard)
     @Post()
+    @ApiBadRequestResponse({
+        description:
+            'Aucun fichier valide n’a été envoyé ou son format est refusé.',
+    })
+    @ApiUnauthorizedResponse({
+        description: "Le jeton d'authentification est absent ou invalide.",
+    })
+    @ApiInternalServerErrorResponse({
+        description: "Le fichier n'a pas pu être enregistré.",
+    })
     @UseInterceptors(FileInterceptor('file', multerOptions))
     uploadFile(
         @UploadedFile(

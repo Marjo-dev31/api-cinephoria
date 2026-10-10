@@ -12,7 +12,13 @@ import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { AuthGuard } from '../user/auth.guard';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+    ApiBadRequestResponse,
+    ApiBearerAuth,
+    ApiInternalServerErrorResponse,
+    ApiTags,
+    ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
 @ApiTags('Films')
 @Controller('movies')
@@ -22,6 +28,39 @@ export class MoviesController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post()
+    @ApiBadRequestResponse({
+        description:
+            'Les données envoyées ne respectent pas le format attendu.',
+        schema: {
+            example: {
+                statusCode: 400,
+                message: [
+                    'title should not be empty',
+                    'minimum_Age must be a number conforming to the specified constraints',
+                ],
+                error: 'Bad Request',
+            },
+        },
+    })
+    @ApiUnauthorizedResponse({
+        description: "Le jeton d'authentification est absent ou invalide.",
+        schema: {
+            example: {
+                statusCode: 401,
+                message: 'Unauthorized',
+            },
+        },
+    })
+    @ApiInternalServerErrorResponse({
+        description:
+            'La création du film a échoué lors de son enregistrement en base de données.',
+        schema: {
+            example: {
+                statusCode: 500,
+                message: 'Internal server error',
+            },
+        },
+    })
     create(@Body() createMovieDto: CreateMovieDto) {
         return this.moviesService.create(createMovieDto);
     }
