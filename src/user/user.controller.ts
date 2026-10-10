@@ -14,6 +14,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { loginUserDto } from './dto/login-user.dto';
 import { AuthGuard } from './auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCreationErrorResponses } from '../helpers/swagger-error-responses';
 
 @ApiTags('Utilisateurs')
 @Controller('user')
@@ -21,6 +22,7 @@ export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Post()
+    @ApiCreationErrorResponses({ persistenceError: false })
     create(@Body() createUserDto: CreateUserDto) {
         return this.userService.create(createUserDto);
     }

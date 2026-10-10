@@ -11,6 +11,7 @@ import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ApiCreationErrorResponses } from '../helpers/swagger-error-responses';
 
 @ApiTags('Rôles')
 @Controller('role')
@@ -18,6 +19,7 @@ export class RoleController {
     constructor(private readonly roleService: RoleService) {}
 
     @Post()
+    @ApiCreationErrorResponses()
     create(@Body() createRoleDto: CreateRoleDto) {
         return this.roleService.create(createRoleDto);
     }
