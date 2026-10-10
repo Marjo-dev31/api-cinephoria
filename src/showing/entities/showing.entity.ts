@@ -13,26 +13,26 @@ import { Order } from '../../order/entities/order.entity';
 @Entity()
 export class Showing {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id!: string;
 
     @Column({ type: 'datetime' })
-    date: Date;
+    date!: Date;
 
     @Column({ type: 'time' })
-    startAt: string;
+    start_At!: string;
 
     @Column({ type: 'time' })
-    endAt: string;
+    end_At!: string;
 
     @ManyToOne(() => Movie, (movie) => movie.showing)
-    movie: Movie;
+    movie!: Movie;
 
     @ManyToOne(() => Room, (room) => room.showing)
-    room: Room;
+    room!: Room;
 
     @OneToMany(() => Seat, (seat) => seat.showing)
-    seat: Seat[];
+    seat!: Seat[];
 
     @OneToMany(() => Order, (order) => order.showing)
-    order: Order[];
+    order!: Order[];
 }

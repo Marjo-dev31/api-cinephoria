@@ -10,7 +10,15 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from './multer-options';
 import { AuthGuard } from '../user/auth.guard';
+import {
+    ApiBearerAuth,
+    ApiBody,
+    ApiConsumes,
+    ApiOperation,
+    ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('Fichiers')
 @Controller('upload')
 export class UploadController {
     // @Get('/:id')
@@ -19,6 +27,18 @@ export class UploadController {
     //     res.sendFile(id, { root: './uploads' });
     // }
 
+    @ApiOperation({ summary: 'Téléverser une image' })
+    @ApiBearerAuth()
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            type: 'object',
+            required: ['file'],
+            properties: {
+                file: { type: 'string', format: 'binary' },
+            },
+        },
+    })
     @UseGuards(AuthGuard)
     @Post()
     @UseInterceptors(FileInterceptor('file', multerOptions))

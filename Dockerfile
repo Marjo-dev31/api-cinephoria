@@ -7,8 +7,8 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install the exact dependency versions pinned in package-lock.json
+RUN npm ci
 
 # Copy the rest of the application code
 COPY . .

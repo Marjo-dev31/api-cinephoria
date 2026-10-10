@@ -10,7 +10,9 @@ import {
 import { ProjectionQualityService } from './projection-quality.service';
 import { CreateProjectionQualityDto } from './dto/create-projection-quality.dto';
 import { UpdateProjectionQualityDto } from './dto/update-projection-quality.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Qualités de projection')
 @Controller('projection-quality')
 export class ProjectionQualityController {
     constructor(
