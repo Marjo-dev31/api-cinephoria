@@ -28,7 +28,7 @@ export class ShowingService {
             const showingId: string = uuidv4();
             const date = new Date(createShowingDto.date);
             const createShowing: any = await queryRunner.query(
-                `INSERT INTO showing(id, date, startAt, endAt, movieId, roomId) VALUES (?, ?, ?, ?, ?, ?)`,
+                `INSERT INTO showing(id, date, start_At, end_At, movieId, roomId) VALUES (?, ?, ?, ?, ?, ?)`,
                 [
                     showingId,
                     date,
@@ -93,8 +93,8 @@ export class ShowingService {
             { id },
             {
                 date: updateShowingDto.date,
-                startAt: updateShowingDto.startAt,
-                endAt: updateShowingDto.endAt,
+                start_At: updateShowingDto.startAt,
+                end_At: updateShowingDto.endAt,
                 movie: updateShowingDto.movie,
                 room: updateShowingDto.room,
             },

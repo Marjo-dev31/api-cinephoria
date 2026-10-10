@@ -12,11 +12,14 @@ import { ShowingService } from './showing.service';
 import { CreateShowingDto } from './dto/create-showing.dto';
 import { UpdateShowingDto } from './dto/update-showing.dto';
 import { AuthGuard } from '../user/auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Séances')
 @Controller('showing')
 export class ShowingController {
     constructor(private readonly showingService: ShowingService) {}
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post()
     create(@Body() createShowingDto: CreateShowingDto) {
@@ -38,6 +41,7 @@ export class ShowingController {
         return this.showingService.findShowingByRoomId(id);
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Patch(':id')
     update(
@@ -47,6 +51,7 @@ export class ShowingController {
         return this.showingService.update(id, UpdateShowingDto);
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Delete(':id')
     remove(@Param('id') id: string) {

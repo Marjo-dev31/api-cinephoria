@@ -13,11 +13,14 @@ import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { AuthGuard } from '../user/auth.guard';
 import { Roles } from '../role/roles-guard/roles.decorator';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Salles')
 @Controller('room')
 export class RoomController {
     constructor(private readonly roomService: RoomService) {}
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post()
     @Roles(['admin'])
@@ -40,12 +43,14 @@ export class RoomController {
     //     return this.roomService.updateNumberOfSales(id, reservation);
     // }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Put(':id')
     update(@Param('id') id: string, @Body() updateRoom: UpdateRoomDto) {
         return this.roomService.updateRoom(id, updateRoom);
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Delete(':id')
     remove(@Param('id') id: string) {

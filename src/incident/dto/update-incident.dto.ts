@@ -1,6 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { CreateIncidentDto } from './create-incident.dto';
 
 export class UpdateIncidentDto extends PartialType(CreateIncidentDto) {
-    id: string;
+    @ApiProperty({ format: 'uuid' })
+    id!: string;
 }

@@ -12,11 +12,14 @@ import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
 import { AuthGuard } from '../user/auth.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Films')
 @Controller('movies')
 export class MoviesController {
     constructor(private readonly moviesService: MoviesService) {}
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post()
     create(@Body() createMovieDto: CreateMovieDto) {
@@ -28,6 +31,7 @@ export class MoviesController {
         return this.moviesService.findAll();
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Get('sales')
     findAllSales() {
@@ -39,12 +43,14 @@ export class MoviesController {
         return this.moviesService.findOne(id);
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateMovieDto: UpdateMovieDto) {
         return this.moviesService.update(id, updateMovieDto);
     }
 
+    @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Delete(':id')
     remove(@Param('id') id: string) {

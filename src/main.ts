@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import * as express from 'express';
 import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 import { CustomConfigModule } from './helpers/custom-config.module';
 
@@ -55,6 +56,22 @@ async function bootstrap() {
             },
         }),
     );
+
+    app.use('/docs', (_req, res, next) => {
+        res.removeHeader('Content-Security-Policy');
+        next();
+    });
+
+    const swaggerConfig = new DocumentBuilder()
+        .setTitle('Cinéphoria API')
+        .setDescription('Documentation de l’API Cinéphoria')
+        .setVersion('1.0')
+        .addBearerAuth()
+        .build();
+    const swaggerDocument = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup('docs', app, swaggerDocument, {
+        jsonDocumentUrl: 'docs-json',
+    });
 
     await app.listen(process.env.PORT ?? 3000, '0.0.0.0', () => {
         console.log(
