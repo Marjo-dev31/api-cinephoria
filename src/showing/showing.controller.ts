@@ -13,6 +13,7 @@ import { CreateShowingDto } from './dto/create-showing.dto';
 import { UpdateShowingDto } from './dto/update-showing.dto';
 import { AuthGuard } from '../user/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCreationErrorResponses } from '../helpers/swagger-error-responses';
 
 @ApiTags('Séances')
 @Controller('showing')
@@ -22,6 +23,7 @@ export class ShowingController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post()
+    @ApiCreationErrorResponses({ authenticated: true })
     create(@Body() createShowingDto: CreateShowingDto) {
         return this.showingService.create(createShowingDto);
     }

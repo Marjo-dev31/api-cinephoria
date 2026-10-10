@@ -14,6 +14,7 @@ import { UpdateRoomDto } from './dto/update-room.dto';
 import { AuthGuard } from '../user/auth.guard';
 import { Roles } from '../role/roles-guard/roles.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCreationErrorResponses } from '../helpers/swagger-error-responses';
 
 @ApiTags('Salles')
 @Controller('room')
@@ -24,6 +25,7 @@ export class RoomController {
     @UseGuards(AuthGuard)
     @Post()
     @Roles(['admin'])
+    @ApiCreationErrorResponses({ authenticated: true })
     create(@Body() createRoomDto: CreateRoomDto) {
         return this.roomService.create(createRoomDto);
     }

@@ -11,6 +11,7 @@ import { CinemaService } from './cinema.service';
 import { CreateCinemaDto } from './dto/create-cinema.dto';
 import { UpdateCinemaDto } from './dto/update-cinema.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ApiCreationErrorResponses } from '../helpers/swagger-error-responses';
 
 @ApiTags('Cinémas')
 @Controller('cinema')
@@ -18,6 +19,7 @@ export class CinemaController {
     constructor(private readonly cinemaService: CinemaService) {}
 
     @Post()
+    @ApiCreationErrorResponses()
     create(@Body() createCinemaDto: CreateCinemaDto) {
         return this.cinemaService.create(createCinemaDto);
     }

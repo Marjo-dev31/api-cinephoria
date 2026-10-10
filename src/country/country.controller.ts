@@ -11,6 +11,7 @@ import { CountryService } from './country.service';
 import { CreateCountryDto } from './dto/create-country.dto';
 import { UpdateCountryDto } from './dto/update-country.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ApiCreationErrorResponses } from '../helpers/swagger-error-responses';
 
 @ApiTags('Pays')
 @Controller('country')
@@ -18,6 +19,7 @@ export class CountryController {
     constructor(private readonly countryService: CountryService) {}
 
     @Post()
+    @ApiCreationErrorResponses()
     create(@Body() createCountryDto: CreateCountryDto) {
         return this.countryService.create(createCountryDto);
     }

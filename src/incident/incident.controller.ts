@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body } from '@nestjs/common';
 import { IncidentService } from './incident.service';
 import { CreateIncidentDto } from './dto/create-incident.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { ApiCreationErrorResponses } from '../helpers/swagger-error-responses';
 
 @ApiTags('Incidents')
 @Controller('incident')
@@ -9,6 +10,7 @@ export class IncidentController {
     constructor(private readonly incidentService: IncidentService) {}
 
     @Post()
+    @ApiCreationErrorResponses()
     create(@Body() createIncidentDto: CreateIncidentDto) {
         return this.incidentService.create(createIncidentDto);
     }

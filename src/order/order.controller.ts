@@ -13,6 +13,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { AuthGuard } from '../user/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCreationErrorResponses } from '../helpers/swagger-error-responses';
 
 @ApiTags('Commandes')
 @Controller('order')
@@ -22,6 +23,7 @@ export class OrderController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post()
+    @ApiCreationErrorResponses({ authenticated: true })
     create(@Body() createOrderDto: CreateOrderDto) {
         return this.orderService.create(createOrderDto);
     }

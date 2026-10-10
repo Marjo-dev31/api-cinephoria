@@ -14,6 +14,7 @@ import { UpdateReviewDto } from './dto/update-review.dto';
 import { AuthGuard } from '../user/auth.guard';
 import { Roles } from '../role/roles-guard/roles.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiCreationErrorResponses } from '../helpers/swagger-error-responses';
 
 @ApiTags('Avis')
 @Controller('reviews')
@@ -23,6 +24,7 @@ export class ReviewsController {
     @ApiBearerAuth()
     @UseGuards(AuthGuard)
     @Post()
+    @ApiCreationErrorResponses({ authenticated: true })
     create(@Body() createReviewDto: CreateReviewDto) {
         return this.reviewsService.create(createReviewDto);
     }
