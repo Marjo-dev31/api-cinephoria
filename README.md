@@ -42,10 +42,6 @@ MYSQL_DB_DATABASE=
 PORT=
 MYSQL_ROOT_PASSWORD=
 SECRET_TOKEN=
-MONGO_URI=
-MONGO_DB=
-MONGO_PASSWORD=
-MONGO_USERNAME=
 
 ```bash
 git clone https://github.com/Marjo-dev31/api-cinephoria.git

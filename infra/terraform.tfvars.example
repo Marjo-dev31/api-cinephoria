@@ -1,0 +1,12 @@
+project_name = "cinephoria"
+environment  = "prod"
+aws_region   = "eu-west-3"
+
+# Existing secret containing SECRET_TOKEN.
+app_secret_name = "cinephoria"
+
+# CloudFront distribution: cinephoriadistribution
+frontend_origins = ["https://dykoa3a9xthu7.cloudfront.net"]
+
+rds_deletion_protection = true
+rds_skip_final_snapshot = false

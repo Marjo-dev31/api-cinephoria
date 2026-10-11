@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MoviesService } from './movies.service';
-import { MOVIE_MONGO_REPOSITORY, MOVIE_REPOSITORY } from './constants';
+import { MOVIE_REPOSITORY } from './constants';
+import { DYNAMODB_DOCUMENT_CLIENT } from '../config/dynamodb.providers';
 
 describe('MoviesService', () => {
     let service: MoviesService;
@@ -11,8 +12,8 @@ describe('MoviesService', () => {
                 MoviesService,
                 { provide: MOVIE_REPOSITORY, useValue: 'MOVIE_REPOSITORY' },
                 {
-                    provide: MOVIE_MONGO_REPOSITORY,
-                    useValue: 'MOVIE_MONGO_REPOSITORY',
+                    provide: DYNAMODB_DOCUMENT_CLIENT,
+                    useValue: 'DYNAMODB_DOCUMENT_CLIENT',
                 },
             ],
         }).compile();

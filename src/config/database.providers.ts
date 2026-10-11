@@ -8,7 +8,7 @@ export const databaseProviders = [
     {
         provide: 'DATA_SOURCE',
         useFactory: async () => {
-            const secrets = await fetchSecrets('prod-jodb');
+            const secrets = await fetchSecrets('cinephoria');
             // const secrets = configService.get('databaseMySql');
             const dataSource = new DataSource({
                 name: 'mysqlDb',
@@ -20,7 +20,7 @@ export const databaseProviders = [
                 database: secrets.MYSQL_DB_DATABASE,
                 entities: [__dirname + '/../**/*.entity{.ts,.js}'],
                 // make sure is false in production
-                synchronize: true,
+                synchronize: false,
             });
 
             return await dataSource.initialize();

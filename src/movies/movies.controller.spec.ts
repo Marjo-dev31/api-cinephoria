@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MoviesController } from './movies.controller';
 import { MoviesService } from './movies.service';
-import { MOVIE_MONGO_REPOSITORY, MOVIE_REPOSITORY } from './constants';
+import { MOVIE_REPOSITORY } from './constants';
+import { DYNAMODB_DOCUMENT_CLIENT } from '../config/dynamodb.providers';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -19,8 +20,8 @@ describe('MoviesController', () => {
                 MoviesService,
                 { provide: MOVIE_REPOSITORY, useValue: 'MOVIE_REPOSITORY' },
                 {
-                    provide: MOVIE_MONGO_REPOSITORY,
-                    useValue: 'MOVIE_MONGO_REPOSITORY',
+                    provide: DYNAMODB_DOCUMENT_CLIENT,
+                    useValue: 'DYNAMODB_DOCUMENT_CLIENT',
                 },
                 { provide: JwtService, useValue: mockJwtService as JwtService },
                 {

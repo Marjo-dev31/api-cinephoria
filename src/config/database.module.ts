@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { databaseProviders } from './database.providers';
 import { ConfigModule } from '@nestjs/config';
-import { mongoProviders } from './mongo.providers';
+import { dynamoDbProviders } from './dynamodb.providers';
 
 @Module({
     imports: [ConfigModule],
-    providers: [...databaseProviders, ...mongoProviders],
-    exports: [...databaseProviders, ...mongoProviders],
+    providers: [...databaseProviders, ...dynamoDbProviders],
+    exports: [...databaseProviders, ...dynamoDbProviders],
 })
 export class DatabaseModule {
     constructor() {
