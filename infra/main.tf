@@ -74,12 +74,7 @@ resource "aws_security_group" "rds" {
 
 resource "random_password" "rds" {
   length = 32
-  # RDS MySQL rejects several characters that the random provider can generate.
-  # A 32-character alphanumeric password remains appropriate for this training project.
-  special = false
-  keepers = {
-    password_policy_version = "rds-mysql-alphanumeric-v1"
-  }
+  special = true
 }
 resource "aws_db_subnet_group" "this" {
   name = "${local.name}-rds"
