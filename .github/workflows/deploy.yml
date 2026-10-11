@@ -1,0 +1,77 @@
+name: Deploy production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: cinephoria-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  AWS_REGION: eu-west-3
+  TF_IN_AUTOMATION: "true"
+  TF_INPUT: "false"
+
+jobs:
+  deploy:
+    name: Package Lambda and apply Terraform
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Install production build dependencies
+        run: npm ci
+
+      - name: Package Lambda artifact
+        run: npm run package:lambda
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.11.4"
+          terraform_wrapper: false
+
+      - name: Prepare Terraform variables
+        working-directory: infra
+        run: cp terraform.tfvars.example terraform.tfvars
+
+      - name: Initialize remote Terraform state
+        working-directory: infra
+        run: |
+          terraform init \
+            -backend-config="bucket=${{ vars.TF_STATE_BUCKET }}" \
+            -backend-config="key=cinephoria/prod/terraform.tfstate" \
+            -backend-config="region=${{ env.AWS_REGION }}" \
+            -backend-config="encrypt=true" \
+            -backend-config="use_lockfile=true"
+
+      - name: Plan infrastructure changes
+        working-directory: infra
+        run: terraform plan -out=tfplan
+
+      - name: Apply infrastructure changes
+        working-directory: infra
+        run: terraform apply -auto-approve tfplan
+
+      - name: Report API endpoint
+        working-directory: infra
+        run: |
+          echo "API URL: $(terraform output -raw api_url)" >> "$GITHUB_STEP_SUMMARY"
