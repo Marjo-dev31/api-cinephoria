@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { OrderController } from './order.controller';
 import { OrderService } from './order.service';
 import { ORDER_REPOSITORY } from './constants';
-import { MOVIE_MONGO_REPOSITORY } from '../movies/constants';
+import { DYNAMODB_DOCUMENT_CLIENT } from '../config/dynamodb.providers';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -20,8 +20,8 @@ describe('OrderController', () => {
                 OrderService,
                 { provide: ORDER_REPOSITORY, useValue: 'ORDER_REPOSITORY' },
                 {
-                    provide: MOVIE_MONGO_REPOSITORY,
-                    useValue: 'MOVIE_MONGO_REPOSITORY',
+                    provide: DYNAMODB_DOCUMENT_CLIENT,
+                    useValue: 'DYNAMODB_DOCUMENT_CLIENT',
                 },
                 { provide: JwtService, useValue: mockJwtService as JwtService },
                 {

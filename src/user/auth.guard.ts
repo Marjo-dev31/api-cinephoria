@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
             }
 
             const authToken: string = authorization.split(' ')[1];
-            const secrets = await fetchSecrets('prod-jodb');
+            const secrets = await fetchSecrets('cinephoria');
             const payload = await this.jwtService.verifyAsync(authToken, {
                 secret: secrets.SECRET_TOKEN,
             });

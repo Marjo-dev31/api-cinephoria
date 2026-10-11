@@ -1,18 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { MovieDto, UpdateMovieDto } from './dto/update-movie.dto';
-import { MOVIE_MONGO_REPOSITORY, MOVIE_REPOSITORY } from './constants';
+import { MOVIE_REPOSITORY } from './constants';
 import { Repository } from 'typeorm';
 import { Movie } from './entities/movie.entity';
-import { MovieMongo } from './entities/movie.mongo';
+import { DYNAMODB_DOCUMENT_CLIENT } from '../config/dynamodb.providers';
+import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 
 @Injectable()
 export class MoviesService {
     constructor(
         @Inject(MOVIE_REPOSITORY)
         private movieRepository: Repository<Movie>,
-        @Inject(MOVIE_MONGO_REPOSITORY)
-        private movieMongoRepository: Repository<MovieMongo>,
+        @Inject(DYNAMODB_DOCUMENT_CLIENT)
+        private readonly dynamoDb: DynamoDBDocumentClient,
     ) {}
 
     async create(createMovieDto: CreateMovieDto) {
@@ -33,7 +34,10 @@ export class MoviesService {
     }
 
     async findAllSales() {
-        return await this.movieMongoRepository.find();
+        const result = await this.dynamoDb.send(
+            new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME }),
+        );
+        return result.Items ?? [];
     }
 
     async findOne(id: string): Promise<MovieDto | null> {

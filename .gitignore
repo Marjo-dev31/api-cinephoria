@@ -1,5 +1,6 @@
 # compiled output
 /dist
+/.build
 /node_modules
 /build
 
@@ -47,6 +48,13 @@ lerna-debug.log*
 # temp directory
 .temp
 .tmp
+
+# Terraform local state and local deployment values
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+tfplan
 
 # Runtime data
 pids

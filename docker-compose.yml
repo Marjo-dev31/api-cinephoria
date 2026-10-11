@@ -20,26 +20,6 @@ services:
             timeout: 5s
             retries: 10
 
-    mongodb:
-        image: mongo:8
-        container_name: mongodb
-        restart: always
-        environment:
-            - MONGO_INITDB_DATABASE=${MONGO_DB}
-            - MONGO_INITDB_ROOT_USERNAME=${MONGO_USERNAME}
-            - MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}
-        ports:
-            - "27017:27017"
-        volumes:
-            - mongodb_data:/data/db
-        networks:
-            - internalnet
-        healthcheck:
-            test: ['CMD-SHELL', 'mongosh --username "$$MONGO_INITDB_ROOT_USERNAME" --password "$$MONGO_INITDB_ROOT_PASSWORD" --authenticationDatabase admin --quiet --eval "db.adminCommand(\"ping\")"']
-            interval: 10s
-            timeout: 5s
-            retries: 10
-
     nestjs_api:
         container_name: nodeappcontainer
         build:
@@ -53,8 +33,6 @@ services:
         depends_on:
             mysql_db:
                 condition: service_healthy
-            mongodb:
-                condition: service_healthy
         environment:
             - PORT=${PORT}
             - NODE_ENV=development
@@ -65,12 +43,6 @@ services:
             - MYSQL_DB_USERNAME=${MYSQL_DB_USERNAME}
             - MYSQL_DB_PASSWORD=${MYSQL_DB_PASSWORD}
             - MYSQL_DB_DATABASE=${MYSQL_DB_DATABASE}
-            - MONGO_HOST=mongodb
-            - MONGO_PORT=27017
-            - MONGO_USERNAME=${MONGO_USERNAME}
-            - MONGO_PASSWORD=${MONGO_PASSWORD}
-            - MONGO_DB=${MONGO_DB}
-            - MONGO_URI=mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/${MONGO_DB}?authSource=admin
         volumes:
             - ./src:/usr/src/app/src
             - ./uploads:/usr/src/app/uploads
@@ -79,8 +51,6 @@ services:
 
 volumes:
   mysql_data:
-    driver: local
-  mongodb_data:
     driver: local
 
 networks:

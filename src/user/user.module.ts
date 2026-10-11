@@ -17,7 +17,7 @@ import { fetchSecrets } from 'src/helpers/fetch-secrets';
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: async (): Promise<JwtModuleOptions> => {
-                const secrets = await fetchSecrets('prod-jodb');
+                const secrets = await fetchSecrets('cinephoria');
                 const SECRET_TOKEN = secrets.SECRET_TOKEN;
 
                 return {
