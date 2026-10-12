@@ -20,7 +20,7 @@ export const databaseProviders = [
                 database: secrets.MYSQL_DB_DATABASE,
                 entities: [__dirname + '/../**/*.entity{.ts,.js}'],
                 // make sure is false in production
-                synchronize: false,
+                synchronize: true,
             });
 
             return await dataSource.initialize();
