@@ -1,0 +1,1 @@
+export const PRICE_REPOSITORY = 'PRICE_REPOSITORY';

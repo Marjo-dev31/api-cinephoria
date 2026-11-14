@@ -10,14 +10,11 @@ import { CustomConfigModule } from './helpers/custom-config.module';
 
 export async function createApp() {
     const app = await NestFactory.create(AppModule);
-    const configService = app.select(CustomConfigModule).get(ConfigService);
-    const PORT = configService.get<number>('PORT', 3000);
     const corsOrigins = process.env.CORS_ORIGINS?.split(',').filter(
         Boolean,
     ) ?? [
         'http://localhost:4200',
         'http://localhost:8100',
-        'http://cinephoria-web.s3-website.eu-west-3.amazonaws.com',
         'https://dykoa3a9xthu7.cloudfront.net',
     ];
 

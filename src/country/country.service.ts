@@ -9,7 +9,7 @@ import { Country } from './entities/country.entity';
 export class CountryService {
     constructor(
         @Inject(COUNTRY_REPOSITORY)
-        private countryRepository: Repository<Country>,
+        private readonly countryRepository: Repository<Country>,
     ) {}
 
     async create(createCountryDto: CreateCountryDto) {

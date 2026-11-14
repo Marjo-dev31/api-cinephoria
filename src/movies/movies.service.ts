@@ -11,7 +11,7 @@ import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 export class MoviesService {
     constructor(
         @Inject(MOVIE_REPOSITORY)
-        private movieRepository: Repository<Movie>,
+        private readonly movieRepository: Repository<Movie>,
         @Inject(DYNAMODB_DOCUMENT_CLIENT)
         private readonly dynamoDb: DynamoDBDocumentClient,
     ) {}

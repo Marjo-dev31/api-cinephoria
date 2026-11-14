@@ -12,7 +12,7 @@ import { randomUUID } from 'crypto';
 export class OrderService {
     constructor(
         @Inject(ORDER_REPOSITORY)
-        private orderRepository: Repository<Order>,
+        private readonly orderRepository: Repository<Order>,
         @Inject(DYNAMODB_DOCUMENT_CLIENT)
         private readonly dynamoDb: DynamoDBDocumentClient,
     ) {}

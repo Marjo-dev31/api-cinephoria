@@ -12,16 +12,31 @@ describe('MoviesController', () => {
     const mockConfigService: Partial<ConfigService> = {
         get: jest.fn(),
     };
+    const movies = [
+        {
+            id: 'movie-1',
+            title: 'Interstellar',
+            description: 'Une expédition au-delà de notre galaxie.',
+            image_Url: '/uploads/interstellar.jpg',
+            minimum_Age: 10,
+            is_Favorite: false,
+        },
+    ];
+    const movieRepository = {
+        find: jest.fn().mockResolvedValue(movies),
+    };
 
     beforeEach(async () => {
+        movieRepository.find.mockClear();
+
         const module: TestingModule = await Test.createTestingModule({
             controllers: [MoviesController],
             providers: [
                 MoviesService,
-                { provide: MOVIE_REPOSITORY, useValue: 'MOVIE_REPOSITORY' },
+                { provide: MOVIE_REPOSITORY, useValue: movieRepository },
                 {
                     provide: DYNAMODB_DOCUMENT_CLIENT,
-                    useValue: 'DYNAMODB_DOCUMENT_CLIENT',
+                    useValue: { send: jest.fn() },
                 },
                 { provide: JwtService, useValue: mockJwtService as JwtService },
                 {
@@ -36,5 +51,19 @@ describe('MoviesController', () => {
 
     it('should be defined', () => {
         expect(controller).toBeDefined();
+    });
+
+    it('should return movie from controller to repository via service', async () => {
+        await expect(controller.findAll()).resolves.toEqual(movies);
+
+        expect(movieRepository.find).toHaveBeenCalledWith({
+            relations: {
+                genre: true,
+                reviews: true,
+                showing: {
+                    room: { cinema: true },
+                },
+            },
+        });
     });
 });

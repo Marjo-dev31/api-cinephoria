@@ -1,41 +1,52 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import {
     CanActivate,
     ExecutionContext,
-    ForbiddenException,
     Injectable,
     UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 import { fetchSecrets } from 'src/helpers/fetch-secrets';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
     constructor(
-        private jwtService: JwtService,
-        private configService: ConfigService,
+        private readonly jwtService: JwtService,
+        private readonly configService: ConfigService,
     ) {}
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
-        try {
-            const request = context.switchToHttp().getRequest();
-            const { authorization } = request.headers;
-            if (!authorization || authorization.trim() === '') {
-                throw new UnauthorizedException('Please provide token');
-            }
+        const request = context.switchToHttp().getRequest<Request>();
+        const token = this.extractTokenFromHeader(request);
 
-            const authToken: string = authorization.split(' ')[1];
-            const secrets = await fetchSecrets('cinephoria');
-            const payload = await this.jwtService.verifyAsync(authToken, {
+        if (!token) {
+            throw new UnauthorizedException('Please provide token');
+        }
+
+        const secrets = await fetchSecrets('cinephoria');
+
+        try {
+            const payload = await this.jwtService.verifyAsync<
+                Record<string, unknown>
+            >(token, {
                 secret: secrets.SECRET_TOKEN,
             });
             request['user'] = payload;
-        } catch (error) {
-            throw new ForbiddenException(error.message);
+        } catch {
+            throw new UnauthorizedException('Invalid or expired token');
         }
+
         return true;
+    }
+
+    private extractTokenFromHeader(request: Request): string | undefined {
+        const authorization = request.headers.authorization;
+        if (!authorization || authorization.trim() === '') {
+            return undefined;
+        }
+
+        const [type, token] = authorization.split(' ');
+        return type === 'Bearer' && token ? token : undefined;
     }
 }
