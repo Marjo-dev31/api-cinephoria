@@ -1,120 +1,186 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Cinéphoria — API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+API REST de la plateforme de cinéma **Cinéphoria**. Elle centralise le catalogue de films, les cinémas et salles, les séances, les réservations, les avis, les comptes utilisateurs et le téléversement d’images.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Le projet est une application [NestJS](https://nestjs.com/) écrite en TypeScript. Les données métier sont conservées dans MySQL via TypeORM ; les statistiques de ventes sont également enregistrées dans DynamoDB.
 
-## Description
+## Fonctionnalités
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Catalogue de films, genres, pays et qualités de projection ;
+- Gestion des cinémas, salles, séances et places ;
+- Création et suivi des réservations ;
+- Comptes utilisateurs, connexion et authentification JWT ;
+- Avis sur les films et signalement d’incidents ;
+- Téléversement d’images PNG, JPEG/JPG ou WebP (5 Mo maximum) ;
+- Documentation interactive Swagger et déploiement AWS (Lambda, API Gateway, RDS et DynamoDB).
 
-## Prerequisites
+## Technologies
 
-node
-npm
-nestjs
+- Node.js 22, NestJS 11 et TypeScript ;
+- MySQL 8.4, TypeORM et Docker Compose ;
+- JWT, bcryptjs, class-validator, Swagger et Multer ;
+- AWS Lambda/API Gateway, RDS, DynamoDB et Terraform (déploiement optionnel).
 
-environments variables:
+## Prérequis
 
-NODE_ENV=
-MYSQL_DB_HOST=
-MYSQL_DB_PORT=
-MYSQL_DB_USERNAME=
-MYSQL_DB_PASSWORD=
-MYSQL_DB_DATABASE=
-PORT=
-MYSQL_ROOT_PASSWORD=
-SECRET_TOKEN=
+- Node.js **22** ;
+- npm ;
+- Docker Desktop (recommandé pour démarrer MySQL) ;
+- un accès AWS configuré uniquement si les statistiques DynamoDB ou le déploiement cloud sont utilisés.
+
+## Installation locale
+
+Clonez le dépôt, installez les dépendances et créez un fichier `.env` à la racine :
 
 ```bash
 git clone https://github.com/Marjo-dev31/api-cinephoria.git
+cd api-cinephoria
+npm ci
 ```
 
-## Project setup
+Créez ensuite `.env` manuellement à partir des variables ci-dessous :
+
+```dotenv
+NODE_ENV=development
+PORT=3000
+
+MYSQL_DB_HOST=localhost
+MYSQL_DB_PORT=3307
+MYSQL_DB_USERNAME=cinephoria
+MYSQL_DB_PASSWORD=mot_de_passe
+MYSQL_DB_DATABASE=cinephoria
+MYSQL_ROOT_PASSWORD=mot_de_passe_root
+
+SECRET_TOKEN=une_cle_jwt_longue_et_secrete
+
+# Requis lors de la création d’une commande ou de la consultation des ventes.
+AWS_REGION=eu-west-3
+DYNAMODB_TABLE_NAME=cinephoria-sales
+
+# Optionnel : liste d’origines séparées par des virgules.
+CORS_ORIGINS=http://localhost:4200,http://localhost:8100
+```
+
+Ne versionnez jamais ce fichier : il contient des identifiants et la clé de signature JWT.
+
+### Démarrer les services avec Docker
+
+Docker Compose lance MySQL sur le port hôte `3307` et l’API sur la valeur définie par `PORT` :
 
 ```bash
-$ npm install
+docker compose up --build
 ```
 
-## Compile and run the project
+L’API utilise `mysql_db:3306` à l’intérieur du réseau Docker. Depuis la machine hôte, utilisez `localhost:3307`.
+
+### Démarrer l’API avec Node.js
+
+Lancez d’abord une instance MySQL accessible avec les paramètres du fichier `.env`, puis :
 
 ```bash
-# development
-$ npm run start
+# développement avec rechargement automatique
+npm run start:dev
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# compilation puis exécution de la version compilée
+npm run build
+npm run start:prod
 ```
 
-## Run tests
+L’API est alors disponible sur `http://localhost:3000` par défaut.
+
+## Documentation et authentification
+
+La documentation OpenAPI interactive est exposée ici une fois l’API démarrée :
+
+- Swagger UI : `http://localhost:3000/docs`
+- Spécification JSON : `http://localhost:3000/docs-json`
+
+Pour obtenir un jeton, créez un utilisateur puis appelez `POST /user/login`. Les routes marquées d’un cadenas dans Swagger attendent l’en-tête suivant :
+
+```http
+Authorization: Bearer <access_token>
+```
+
+Les réponses de connexion contiennent `access_token`. Les mots de passe sont hachés avec bcrypt avant leur enregistrement.
+
+## Principales routes
+
+La documentation Swagger fait foi pour les schémas de requête et de réponse détaillés.
+
+| Ressource | Routes disponibles |
+| --- | --- |
+| Films | `GET /movies`, `GET /movies/:id`, `POST /movies`, `PATCH /movies/:id`, `DELETE /movies/:id`, `PATCH /movies/:id/favorite`, `GET /movies/sales` |
+| Utilisateurs | `POST /user`, `POST /user/login`, `GET /user`, `GET /user/:id`, `PATCH /user/:id`, `DELETE /user/:id` |
+| Réservations | `POST /order`, `GET /order`, `GET /order/:id`, `PATCH /order/:id`, `DELETE /order/:id` |
+| Séances | `GET /showing`, `GET /showing/:id`, `GET /showing/room/:id`, `POST /showing`, `PATCH /showing/:id`, `DELETE /showing/:id` |
+| Cinémas et salles | `GET`/`POST`/`PATCH`/`DELETE /cinema`, `GET`/`POST`/`PUT`/`DELETE /room`, `GET`/`PATCH`/`DELETE /seat` |
+| Référentiels | `GET`/`POST /genre`, `GET`/`POST`/`PATCH`/`DELETE /country`, `/projection-quality` et `/role` |
+| Avis et incidents | `GET`/`POST`/`PATCH`/`DELETE /reviews`, `GET`/`POST /incident` |
+| Fichiers | `POST /upload` (champ multipart `file`), fichiers accessibles sous `/uploads/<nom-du-fichier>` |
+
+Les opérations de modification sensibles et le téléversement nécessitent une authentification. La création d’une commande écrit une entrée de vente dans la table DynamoDB configurée par `DYNAMODB_TABLE_NAME`; la route `GET /movies/sales` la consulte.
+
+## Structure du projet
+
+```text
+src/
+├── movies/                 # films et statistiques de vente
+├── user/                   # utilisateurs, connexion JWT et garde d’authentification
+├── order/                  # réservations MySQL + évènements de vente DynamoDB
+├── cinema/, room/, seat/   # établissements et capacité des salles
+├── showing/                # programmation des séances
+├── reviews/, incident/     # avis clients et incidents
+├── upload/                 # dépôt d’images dans uploads/
+├── config/                 # fournisseurs MySQL et DynamoDB
+└── main.ts                 # CORS, sécurité HTTP, validation et Swagger
+infra/                      # infrastructure Terraform AWS
+```
+
+## Tests et qualité
 
 ```bash
-# unit tests
-$ npm run test
+# tests unitaires
+npm test
 
-# e2e tests
-$ npm run test:e2e
+# tests unitaires en surveillance
+npm run test:watch
 
-# test coverage
-$ npm run test:cov
+# couverture
+npm run test:cov
+
+# tests end-to-end
+npm run test:e2e
+
+# lint avec correction automatique
+npm run lint
 ```
 
-## Deployment
+## Déploiement AWS
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+L’infrastructure Terraform du dossier [`infra`](infra/README.md) déploie l’API sur Lambda derrière API Gateway, une base RDS MySQL privée et la table DynamoDB de ventes.
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run package:lambda
+cd infra
+cp terraform.tfvars.example terraform.tfvars
+terraform init
+terraform plan
+terraform apply
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Consultez le [guide d’infrastructure](infra/README.md) avant tout déploiement : il détaille les prérequis AWS, la gestion des secrets et le backend Terraform distant.
 
-## Resources
+## Scripts npm
 
-Check out a few resources that may come in handy when working with NestJS:
+| Commande | Description |
+| --- | --- |
+| `npm run start` | démarre NestJS |
+| `npm run start:dev` | démarre NestJS en mode watch |
+| `npm run build` | compile l’application dans `dist/` |
+| `npm run start:prod` | exécute l’application compilée |
+| `npm run package:lambda` | crée l’archive de déploiement Lambda |
+| `npm run lint` | analyse et corrige le code avec ESLint |
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## Licence
 
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Projet privé — `UNLICENSED`.

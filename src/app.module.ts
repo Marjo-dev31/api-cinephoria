@@ -17,6 +17,7 @@ import { UploadModule } from './upload/upload.module';
 import { UserModule } from './user/user.module';
 import { RoleModule } from './role/role.module';
 import { IncidentModule } from './incident/incident.module';
+import { PricelistModule } from './pricelist/pricelist.module';
 import { CustomConfigModule } from './helpers/custom-config.module';
 
 @Module({
@@ -39,6 +40,7 @@ import { CustomConfigModule } from './helpers/custom-config.module';
         UserModule,
         RoleModule,
         IncidentModule,
+        PricelistModule,
         DatabaseModule,
     ],
     controllers: [AppController],
