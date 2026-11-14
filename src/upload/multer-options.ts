@@ -3,16 +3,12 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { BadRequestException } from '@nestjs/common';
-import { diskStorage } from 'multer';
+import { memoryStorage } from 'multer';
 
 export const multerOptions = {
-    storage: diskStorage({
-        destination: './uploads',
-        filename: (req, file, cb) => {
-            const filename = file.originalname;
-            cb(null, filename);
-        },
-    }),
+    // Keep the file in memory: Lambda's filesystem is read-only, so the
+    // upload is streamed to S3 from the in-memory buffer instead of disk.
+    storage: memoryStorage(),
     fileFilter: (req, file, cb) => {
         const allowedMimes = [
             'image/png',

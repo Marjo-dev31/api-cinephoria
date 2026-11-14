@@ -1,16 +1,11 @@
 import { Module } from '@nestjs/common';
-import { MulterModule } from '@nestjs/platform-express';
 import { UploadController } from './upload.controller';
 import { UserModule } from '../user/user.module';
+import { s3Providers } from '../config/s3.providers';
 
 @Module({
-    imports: [
-        MulterModule.register({
-            dest: './uploads',
-        }),
-        UserModule,
-    ],
+    imports: [UserModule],
     controllers: [UploadController],
-    providers: [],
+    providers: [...s3Providers],
 })
 export class UploadModule {}

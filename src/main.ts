@@ -1,8 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
-import * as express from 'express';
-import { join } from 'path';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
@@ -31,7 +29,6 @@ export async function createApp() {
             },
         }),
     );
-    app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
     app.enableCors({
         origin: corsOrigins,
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE, OPTIONS',

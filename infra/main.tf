@@ -47,6 +47,15 @@ resource "aws_vpc_endpoint" "dynamodb" {
   tags = merge(local.tags, { Name = "${local.name}-dynamodb" })
 }
 
+# Free private path from Lambda to S3; required because the VPC has no NAT gateway.
+resource "aws_vpc_endpoint" "s3" {
+  vpc_id = aws_vpc.this.id
+  service_name = "com.amazonaws.${var.aws_region}.s3"
+  vpc_endpoint_type = "Gateway"
+  route_table_ids = [for route_table in aws_route_table.private : route_table.id]
+  tags = merge(local.tags, { Name = "${local.name}-s3" })
+}
+
 resource "aws_security_group" "lambda" {
   name = "${local.name}-lambda"
   description = "Lambda access to private RDS and DynamoDB"
@@ -124,6 +133,37 @@ resource "aws_dynamodb_table" "movie_sales" {
   tags = local.tags
 }
 
+# S3 bucket storing movie images uploaded through the API.
+# Lambda has a read-only filesystem, so uploads go to S3 instead of local disk.
+resource "aws_s3_bucket" "uploads" {
+  bucket = "${local.name}-uploads"
+  tags   = local.tags
+}
+
+resource "aws_s3_bucket_public_access_block" "uploads" {
+  bucket                  = aws_s3_bucket.uploads.id
+  block_public_acls       = true
+  ignore_public_acls      = true
+  block_public_policy     = false
+  restrict_public_buckets = false
+}
+
+# Public read access so the frontend can display images directly by URL.
+resource "aws_s3_bucket_policy" "uploads_public_read" {
+  bucket = aws_s3_bucket.uploads.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Sid       = "PublicReadGetObject"
+      Effect    = "Allow"
+      Principal = "*"
+      Action    = "s3:GetObject"
+      Resource  = "${aws_s3_bucket.uploads.arn}/*"
+    }]
+  })
+  depends_on = [aws_s3_bucket_public_access_block.uploads]
+}
+
 resource "aws_iam_role" "lambda" {
   name = "${local.name}-lambda"
   assume_role_policy = jsonencode({ Version = "2012-10-17", Statement = [{ Effect = "Allow", Action = "sts:AssumeRole", Principal = { Service = "lambda.amazonaws.com" } }] })
@@ -141,6 +181,11 @@ resource "aws_iam_role_policy" "lambda_dynamodb" {
   name = "${local.name}-dynamodb-sales"
   role = aws_iam_role.lambda.id
   policy = jsonencode({ Version = "2012-10-17", Statement = [{ Effect = "Allow", Action = ["dynamodb:PutItem", "dynamodb:Scan"], Resource = aws_dynamodb_table.movie_sales.arn }] })
+}
+resource "aws_iam_role_policy" "lambda_s3_uploads" {
+  name = "${local.name}-s3-uploads"
+  role = aws_iam_role.lambda.id
+  policy = jsonencode({ Version = "2012-10-17", Statement = [{ Effect = "Allow", Action = ["s3:PutObject"], Resource = "${aws_s3_bucket.uploads.arn}/*" }] })
 }
 
 resource "aws_cloudwatch_log_group" "lambda" {
@@ -169,6 +214,8 @@ resource "aws_lambda_function" "api" {
       MYSQL_DB_PASSWORD = random_password.rds.result
       MYSQL_DB_DATABASE = var.db_name
       DYNAMODB_TABLE_NAME = aws_dynamodb_table.movie_sales.name
+      S3_BUCKET_NAME = aws_s3_bucket.uploads.bucket
+      S3_REGION = var.aws_region
     }
   }
   vpc_config {

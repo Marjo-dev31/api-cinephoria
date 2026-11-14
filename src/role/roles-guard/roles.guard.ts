@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
@@ -8,7 +8,7 @@ import { Roles } from './roles.decorator';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-    constructor(private reflector: Reflector) {}
+    constructor(private readonly reflector: Reflector) {}
 
     canActivate(context: ExecutionContext): boolean {
         const roles = this.reflector.get(Roles, context.getHandler());

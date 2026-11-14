@@ -1,5 +1,8 @@
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import {
     Controller,
+    Inject,
+    InternalServerErrorException,
     MaxFileSizeValidator,
     ParseFilePipe,
     Post,
@@ -8,8 +11,6 @@ import {
     UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from './multer-options';
-import { AuthGuard } from '../user/auth.guard';
 import {
     ApiBadRequestResponse,
     ApiBearerAuth,
@@ -20,15 +21,19 @@ import {
     ApiTags,
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { randomUUID } from 'crypto';
+import { extname } from 'path';
+import { S3_CLIENT } from '../config/s3.providers';
+import { AuthGuard } from '../user/auth.guard';
+import { multerOptions } from './multer-options';
 
 @ApiTags('Fichiers')
 @Controller('upload')
 export class UploadController {
-    // @Get('/:id')
-    // getFile(@Param('id') id: string, @Res() res) {
-    //     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-    //     res.sendFile(id, { root: './uploads' });
-    // }
+    constructor(
+        @Inject(S3_CLIENT)
+        private readonly s3Client: S3Client,
+    ) {}
 
     @ApiOperation({ summary: 'Téléverser une image' })
     @ApiBearerAuth()
@@ -55,7 +60,7 @@ export class UploadController {
         description: "Le fichier n'a pas pu être enregistré.",
     })
     @UseInterceptors(FileInterceptor('file', multerOptions))
-    uploadFile(
+    async uploadFile(
         @UploadedFile(
             new ParseFilePipe({
                 validators: [
@@ -68,10 +73,39 @@ export class UploadController {
         )
         file: Express.Multer.File,
     ) {
+        const bucket = process.env.S3_BUCKET_NAME;
+        if (!bucket) {
+            throw new InternalServerErrorException(
+                'Le stockage des fichiers n’est pas configuré (S3_BUCKET_NAME manquant).',
+            );
+        }
+
+        // Unique key so two uploads with the same original name never collide.
+        const key = `${randomUUID()}${extname(file.originalname)}`;
+
+        try {
+            await this.s3Client.send(
+                new PutObjectCommand({
+                    Bucket: bucket,
+                    Key: key,
+                    Body: file.buffer,
+                    ContentType: file.mimetype,
+                }),
+            );
+        } catch {
+            throw new InternalServerErrorException(
+                "Le fichier n'a pas pu être enregistré.",
+            );
+        }
+
+        const region =
+            process.env.S3_REGION ?? process.env.AWS_REGION ?? 'eu-west-3';
+        const url = `https://${bucket}.s3.${region}.amazonaws.com/${key}`;
+
         return {
             message: 'Fichier uploadé avec succès',
             filename: file.originalname,
-            path: `/uploads/${file.filename}`,
+            path: url,
             size: file.size,
         };
     }
