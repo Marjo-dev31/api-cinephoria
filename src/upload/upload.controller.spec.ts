@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { UploadController } from './upload.controller';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { S3_CLIENT } from '../config/s3.providers';
 
 describe('UploadController', () => {
     let controller: UploadController;
@@ -9,6 +10,7 @@ describe('UploadController', () => {
     const mockConfigService: Partial<ConfigService> = {
         get: jest.fn(),
     };
+    const mockS3Client = { send: jest.fn() };
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [UploadController],
@@ -18,6 +20,7 @@ describe('UploadController', () => {
                     provide: ConfigService,
                     useValue: mockConfigService as ConfigService,
                 },
+                { provide: S3_CLIENT, useValue: mockS3Client },
             ],
         }).compile();
 

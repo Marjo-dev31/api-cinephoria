@@ -3,15 +3,10 @@ import { MoviesService } from './movies.service';
 import { MoviesController } from './movies.controller';
 import { DatabaseModule } from '../config/database.module';
 import { movieProviders } from './movie.providers';
-import { MulterModule } from '@nestjs/platform-express';
 import { UserModule } from '../user/user.module';
 
 @Module({
-    imports: [
-        DatabaseModule,
-        MulterModule.register({ dest: './uploads' }),
-        UserModule,
-    ],
+    imports: [DatabaseModule, UserModule],
     controllers: [MoviesController],
     providers: [...movieProviders, MoviesService],
 })

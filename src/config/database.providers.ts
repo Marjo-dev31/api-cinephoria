@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ConfigService } from '@nestjs/config';
 import { fetchSecrets } from 'src/helpers/fetch-secrets';
 import { DataSource } from 'typeorm';

@@ -12,3 +12,8 @@ output "dynamodb_movie_sales_table" {
   description = "DynamoDB table holding movie sale records."
   value       = aws_dynamodb_table.movie_sales.name
 }
+
+output "s3_uploads_bucket" {
+  description = "S3 bucket storing uploaded movie images."
+  value       = aws_s3_bucket.uploads.bucket
+}
