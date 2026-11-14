@@ -21,8 +21,6 @@ import {
     ApiTags,
     ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { randomUUID } from 'crypto';
-import { extname } from 'path';
 import { S3_CLIENT } from '../config/s3.providers';
 import { AuthGuard } from '../user/auth.guard';
 import { multerOptions } from './multer-options';
@@ -79,9 +77,7 @@ export class UploadController {
                 'Le stockage des fichiers n’est pas configuré (S3_BUCKET_NAME manquant).',
             );
         }
-
-        // Unique key so two uploads with the same original name never collide.
-        const key = `${randomUUID()}${extname(file.originalname)}`;
+        const key = file.originalname;
 
         try {
             await this.s3Client.send(
